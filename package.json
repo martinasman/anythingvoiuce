@@ -9,9 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@mendable/firecrawl-js": "^4.9.0",
+    "@supabase/ssr": "^0.8.0",
+    "@supabase/supabase-js": "^2.87.3",
+    "@vapi-ai/server-sdk": "^0.11.0",
+    "@vapi-ai/web": "^2.5.2",
+    "clsx": "^2.1.1",
     "next": "16.0.10",
     "react": "19.2.1",
-    "react-dom": "19.2.1"
+    "react-dom": "19.2.1",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.2.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
