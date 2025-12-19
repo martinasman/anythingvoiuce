@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
         JSON.stringify({
           say: 'Det nummer du har ringt är inte i tjänst.',
           voice: 'Elvira',
-          next: JSON.stringify({ hangup: 'reject' }),
+          next: { hangup: 'reject' },
         }),
         { headers: { 'Content-Type': 'application/json' } }
       )
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
         JSON.stringify({
           say: 'Tyvärr kan vi inte koppla ditt samtal just nu. Försök igen senare.',
           voice: 'Elvira',
-          next: JSON.stringify({ hangup: 'reject' }),
+          next: { hangup: 'reject' },
         }),
         { headers: { 'Content-Type': 'application/json' } }
       )
@@ -114,10 +114,14 @@ export async function POST(request: NextRequest) {
           connect: vapiPhoneNumber,
           callerid: from, // Pass through original caller ID
           timeout: 30, // 30 seconds to connect
-          next: JSON.stringify({
-            say: 'Tyvärr kunde vi inte koppla ditt samtal. Försök igen senare.',
+          busy: {
+            say: 'Numret är upptaget. Försök igen senare.',
             voice: 'Elvira',
-          }),
+          },
+          failed: {
+            say: 'Kunde inte koppla samtalet. Försök igen senare.',
+            voice: 'Elvira',
+          },
         }),
         { headers: { 'Content-Type': 'application/json' } }
       )
@@ -129,7 +133,7 @@ export async function POST(request: NextRequest) {
       JSON.stringify({
         say: 'Vår AI-receptionist är inte tillgänglig just nu. Försök igen senare.',
         voice: 'Elvira',
-        next: JSON.stringify({ hangup: 'reject' }),
+        next: { hangup: 'reject' },
       }),
       { headers: { 'Content-Type': 'application/json' } }
     )
@@ -139,7 +143,7 @@ export async function POST(request: NextRequest) {
       JSON.stringify({
         say: 'Ett tekniskt fel uppstod. Försök igen senare.',
         voice: 'Elvira',
-        next: JSON.stringify({ hangup: 'reject' }),
+        next: { hangup: 'reject' },
       }),
       { headers: { 'Content-Type': 'application/json' } }
     )
