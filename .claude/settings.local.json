@@ -9,7 +9,30 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git checkout:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx next dev)",
+      "Bash(cat:*)",
+      "Bash(./node_modules/.bin/next dev:*)",
+      "Bash(bash -i -c \"npm run dev\")",
+      "Bash(echo:*)",
+      "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(tree:*)",
+      "Bash(export PATH=\"/opt/homebrew/bin:/usr/bin:$PATH\")",
+      "Bash(supabase db pull)",
+      "Bash(brew install:*)",
+      "Bash(export PATH=\"/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin\")",
+      "Bash(export PATH=\"/opt/homebrew/bin:/usr/local/bin:$PATH\")",
+      "Bash(supabase db pull:*)",
+      "Bash(supabase migration repair:*)",
+      "Bash(supabase migration:*)",
+      "Bash(export PATH=\"/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:$PATH\")",
+      "Bash(node verify-db.js:*)",
+      "Bash(supabase db push:*)",
+      "Bash(node setup-production.js:*)",
+      "Bash(chmod:*)"
     ]
   }
 }

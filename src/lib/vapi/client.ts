@@ -14,6 +14,112 @@ function getVapiClient(): VapiClient {
   return vapi
 }
 
+/**
+ * Get or create a Vapi phone number for inbound calls
+ * Vapi phone numbers are US-based and can receive forwarded calls from 46elks
+ */
+export async function getOrCreateVapiPhoneNumber(): Promise<{
+  success: boolean
+  phoneNumber?: string
+  phoneNumberId?: string
+  sipUri?: string
+  error?: string
+}> {
+  try {
+    const client = getVapiClient()
+
+    // First, try to list existing phone numbers
+    const phoneNumbers = await client.phoneNumbers.list()
+
+    // Look for an existing active phone number
+    const existingNumber = phoneNumbers.find(
+      (p: { provider?: string; number?: string }) => p.provider === 'vapi' && p.number
+    )
+
+    if (existingNumber) {
+      return {
+        success: true,
+        phoneNumber: (existingNumber as { number: string }).number,
+        phoneNumberId: (existingNumber as { id: string }).id,
+        sipUri: (existingNumber as { sipUri?: string }).sipUri,
+      }
+    }
+
+    // No existing number, try to buy one
+    // Note: This requires Vapi account with phone number capabilities
+    const newNumber = await client.phoneNumbers.create({
+      provider: 'vapi',
+      // Vapi will assign a US number
+    })
+
+    return {
+      success: true,
+      phoneNumber: (newNumber as { number: string }).number,
+      phoneNumberId: newNumber.id,
+      sipUri: (newNumber as { sipUri?: string }).sipUri,
+    }
+  } catch (error) {
+    console.error('Failed to get/create Vapi phone number:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get phone number',
+    }
+  }
+}
+
+/**
+ * Update Vapi phone number to use a specific assistant
+ * Note: The Vapi SDK may not support direct assistant assignment.
+ * The assistant ID is typically set when creating the phone number or via API call.
+ */
+export async function assignAssistantToPhoneNumber(
+  _phoneNumberId: string,
+  _assistantId: string
+): Promise<{ success: boolean; error?: string }> {
+  // Note: This function is a placeholder. In Vapi, the assistant is typically
+  // assigned to the phone number at creation time or handled via server URL webhooks.
+  // The current SDK version may not support updating assistantId directly.
+  // Instead, incoming calls are routed to the correct assistant based on the
+  // business lookup in our webhook.
+  console.log('Note: Vapi phone number assistant assignment is handled via webhooks')
+  return { success: true }
+}
+
+/**
+ * Get Vapi phone number details
+ */
+export async function getVapiPhoneNumber(phoneNumberId: string): Promise<{
+  success: boolean
+  phoneNumber?: {
+    id: string
+    number: string
+    sipUri?: string
+    assistantId?: string
+  }
+  error?: string
+}> {
+  try {
+    const client = getVapiClient()
+    const phoneNumber = await client.phoneNumbers.get({ id: phoneNumberId })
+
+    return {
+      success: true,
+      phoneNumber: {
+        id: phoneNumber.id,
+        number: (phoneNumber as { number: string }).number,
+        sipUri: (phoneNumber as { sipUri?: string }).sipUri,
+        assistantId: (phoneNumber as { assistantId?: string }).assistantId,
+      },
+    }
+  } catch (error) {
+    console.error('Failed to get Vapi phone number:', error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to get phone number',
+    }
+  }
+}
+
 export interface CreateAssistantResult {
   success: boolean
   assistantId?: string
