@@ -155,22 +155,26 @@ export async function POST(
       }
     }
 
-    // Step 5: Check if this customer already has a phone number record
-    const { data: existingPhone } = await supabase
+    // Step 5: Check if the shared phone number already exists in database
+    // This is the dev number that gets reused across test customers
+    const { data: existingSharedNumber } = await supabase
       .from('phone_numbers')
       .select('*')
-      .eq('customer_id', customerId)
+      .eq('phone_number', elksNumber)
       .single()
 
+    const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/46elks`
     let phoneNumberId: string
 
-    if (existingPhone) {
-      // Update existing phone number record to point to this business
+    if (existingSharedNumber) {
+      // Phone number already exists - update it to point to this customer and business
+      console.log('Reusing existing shared phone number:', elksNumber)
+
       const { data: updatedPhone, error: updateError } = await supabase
         .from('phone_numbers')
         .update({
+          customer_id: customerId,
           business_id: business.id,
-          phone_number: elksNumber,
           phone_number_display: elksNumberDisplay,
           provider_number_id: elksNumberId,
           vapi_phone_number: vapiPhoneNumber,
@@ -178,28 +182,26 @@ export async function POST(
           status: 'active',
           activated_at: new Date().toISOString(),
         })
-        .eq('id', existingPhone.id)
+        .eq('id', existingSharedNumber.id)
         .select()
         .single()
 
-      if (updateError || !updatedPhone) {
+      if (updateError) {
         console.error('Failed to update phone number:', updateError)
         return NextResponse.json(
-          { error: 'Failed to update phone number' },
+          {
+            error: 'Failed to update phone number record',
+            details: updateError.message
+          },
           { status: 500 }
         )
       }
 
       phoneNumberId = updatedPhone.id
     } else {
-      // First, unlink the shared number from any other businesses (for dev/testing)
-      await supabase
-        .from('phone_numbers')
-        .update({ business_id: null })
-        .eq('phone_number', elksNumber)
-
-      // Create new phone number record
-      const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/46elks`
+      // Phone number doesn't exist yet - create it
+      // This should only happen the very first time activating dev mode
+      console.log('Creating new shared phone number record:', elksNumber)
 
       const { data: newPhone, error: phoneError } = await supabase
         .from('phone_numbers')
@@ -221,10 +223,14 @@ export async function POST(
         .select()
         .single()
 
-      if (phoneError || !newPhone) {
+      if (phoneError) {
         console.error('Failed to create phone number:', phoneError)
         return NextResponse.json(
-          { error: 'Failed to create phone number record' },
+          {
+            error: 'Failed to create phone number record',
+            details: phoneError.message,
+            hint: 'The phone number might already exist or there may be a database constraint issue.'
+          },
           { status: 500 }
         )
       }
