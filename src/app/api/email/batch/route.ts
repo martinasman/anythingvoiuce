@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       }
 
       const contactEmail = business.contact_email || business.email
-      if (!contactEmail) {
+      if (!contactEmail && !process.env.DEV_EMAIL_OVERRIDE) {
         results.push({
           businessId,
           businessName: business.name || 'Unknown',
@@ -65,6 +65,9 @@ export async function POST(request: NextRequest) {
         failureCount++
         continue
       }
+
+      // Dev mode: override recipient to test email
+      const recipientEmail = process.env.DEV_EMAIL_OVERRIDE || contactEmail
 
       if (!business.preview_url || !business.vapi_assistant_id) {
         results.push({
@@ -92,7 +95,7 @@ export async function POST(request: NextRequest) {
 
       // Send email
       const result = await sendOutreachEmail({
-        to: contactEmail,
+        to: recipientEmail,
         businessName: business.name || 'Ert företag',
         previewUrl: business.preview_url,
         trackingToken,
@@ -114,7 +117,9 @@ export async function POST(request: NextRequest) {
           event_type: 'email_sent',
           metadata: {
             message_id: result.messageId,
-            to: contactEmail,
+            to: recipientEmail,
+            original_email: contactEmail,
+            dev_override: !!process.env.DEV_EMAIL_OVERRIDE,
             batch: true,
           },
         })

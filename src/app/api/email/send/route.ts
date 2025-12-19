@@ -32,12 +32,15 @@ export async function POST(request: NextRequest) {
 
     // Validate business has required fields
     const contactEmail = business.contact_email || business.email
-    if (!contactEmail) {
+    if (!contactEmail && !process.env.DEV_EMAIL_OVERRIDE) {
       return NextResponse.json(
         { error: 'Business has no contact email' },
         { status: 400 }
       )
     }
+
+    // Dev mode: override recipient to test email
+    const recipientEmail = process.env.DEV_EMAIL_OVERRIDE || contactEmail
 
     if (!business.preview_url || !business.vapi_assistant_id) {
       return NextResponse.json(
@@ -58,7 +61,7 @@ export async function POST(request: NextRequest) {
 
     // Send the email
     const result = await sendOutreachEmail({
-      to: contactEmail,
+      to: recipientEmail,
       businessName: business.name || 'Ert företag',
       previewUrl: business.preview_url,
       trackingToken,
@@ -86,7 +89,9 @@ export async function POST(request: NextRequest) {
       event_type: 'email_sent',
       metadata: {
         message_id: result.messageId,
-        to: contactEmail,
+        to: recipientEmail,
+        original_email: contactEmail,
+        dev_override: !!process.env.DEV_EMAIL_OVERRIDE,
         timestamp: new Date().toISOString(),
       },
     })
@@ -94,7 +99,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       messageId: result.messageId,
-      sentTo: contactEmail,
+      sentTo: recipientEmail,
+      originalEmail: contactEmail,
+      devOverride: !!process.env.DEV_EMAIL_OVERRIDE,
     })
   } catch (error) {
     console.error('Send email API error:', error)

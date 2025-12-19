@@ -50,7 +50,7 @@ const EXTRACTION_PROMPT = `Du analyserar en svensk företagswebbplats. Extrahera
   "address": "Fullständig gatuadress",
   "city": "Stad",
   "phone": "Telefonnummer",
-  "email": "E-postadress",
+  "email": "Huvudsaklig kontakt-email för företaget (prioritera info@, kontakt@, bokning@, eller liknande)",
   "website": "Webbplatsens URL",
   "booking_url": "URL för bokning om tillgänglig",
   "faqs": [
@@ -58,8 +58,8 @@ const EXTRACTION_PROMPT = `Du analyserar en svensk företagswebbplats. Extrahera
   ],
   "tone": "En av: professional, friendly, casual, formal (baserat på webbplatsens ton)",
   "language": "En av: swedish, english, both",
-  "contact_name": "Kontaktpersonens namn om nämnt",
-  "contact_email": "Direkt kontakt-email om annorlunda än allmän",
+  "contact_name": "Kontaktpersonens namn om nämnt (ägare, VD, chef)",
+  "contact_email": "Direkt email till ägare/beslutsfattare om tillgänglig (personlig email prioriteras)",
   "contact_phone": "Direkt kontaktnummer om annorlunda än allmänt"
 }
 
@@ -69,7 +69,13 @@ Viktiga instruktioner:
 - Generera 3-5 realistiska FAQs baserat på deras tjänster
 - Beskriv tjänster kortfattat och tydligt
 - Identifiera branschen baserat på tjänster och innehåll
-- Alla beskrivningar ska vara på svenska`
+- Alla beskrivningar ska vara på svenska
+
+VIKTIGT - Email-prioritering:
+- Leta efter email-adresser i sidfot, "Kontakta oss", "Om oss", mailto: länkar
+- Prioritera i denna ordning: 1) Ägarens/chefens personliga email, 2) info@/kontakt@/bokning@, 3) Annan synlig email
+- Om flera emails finns, välj den mest sannolika för beslutfattare
+- contact_email ska vara beslutsfattarens email om möjligt (förnamn.efternamn@, vd@, etc.)`
 
 export async function extractBusinessData(
   markdown: string,
