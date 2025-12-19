@@ -65,8 +65,9 @@ function formatDate(dateString: string | null): string {
   })
 }
 
-export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
+export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [sendingEmailId, setSendingEmailId] = useState<string | null>(null)
   const [modal, setModal] = useState<ActivateModalState>({
     isOpen: false,
     business: null,
@@ -193,6 +194,8 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
               const statusStyle = STATUS_STYLES[lead.status] || STATUS_STYLES.pending
               const canActivate = lead.vapi_assistant_id && !lead.is_production
               const canSwitch = lead.vapi_assistant_id && lead.is_production
+              const canSendEmail = lead.vapi_assistant_id && lead.preview_url && !lead.email_sent_at
+              const hasEmail = lead.email || lead.contact_email
 
               return (
                 <Fragment key={lead.id}>
@@ -248,6 +251,45 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
                             className="text-blue-400 hover:text-blue-300 text-sm font-medium"
                           >
                             Demo
+                          </Link>
+                        )}
+                        {/* Send Email button */}
+                        {canSendEmail && hasEmail && onSendEmail && (
+                          <button
+                            onClick={async (e) => {
+                              e.stopPropagation()
+                              setSendingEmailId(lead.id)
+                              try {
+                                await onSendEmail(lead.id)
+                              } finally {
+                                setSendingEmailId(null)
+                              }
+                            }}
+                            disabled={sendingEmailId === lead.id}
+                            className="px-2.5 py-1 text-xs font-medium bg-purple-600 hover:bg-purple-700 disabled:bg-zinc-700 text-white rounded transition-colors flex items-center gap-1"
+                          >
+                            {sendingEmailId === lead.id ? (
+                              <>
+                                <svg className="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                </svg>
+                                Skickar...
+                              </>
+                            ) : (
+                              'Skicka demo'
+                            )}
+                          </button>
+                        )}
+                        {/* Customer login button */}
+                        {lead.is_production && hasEmail && (
+                          <Link
+                            href={`/login?email=${encodeURIComponent(lead.email || lead.contact_email || '')}`}
+                            target="_blank"
+                            onClick={(e) => e.stopPropagation()}
+                            className="px-2.5 py-1 text-xs font-medium bg-zinc-700 hover:bg-zinc-600 text-white rounded transition-colors"
+                          >
+                            Kundlogin
                           </Link>
                         )}
                         {canActivate && (
@@ -312,6 +354,39 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
                             <p className="text-zinc-500">CTA klickad</p>
                             <p className="text-zinc-300">{formatDate(lead.cta_clicked_at)}</p>
                           </div>
+                          {lead.vapi_assistant_id && (
+                            <div>
+                              <p className="text-zinc-500">AI Agent ID</p>
+                              <p className="text-zinc-300 font-mono text-xs">{lead.vapi_assistant_id.slice(0, 8)}...</p>
+                            </div>
+                          )}
+                          {lead.email_sent_at && (
+                            <div>
+                              <p className="text-zinc-500">Email skickat</p>
+                              <p className="text-zinc-300">{formatDate(lead.email_sent_at)}</p>
+                            </div>
+                          )}
+                          {lead.is_production && (
+                            <div className="col-span-full mt-2 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                              <p className="text-green-400 font-medium text-sm flex items-center gap-2">
+                                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                                Produktionskund - Aktiv AI-assistent
+                              </p>
+                              <div className="flex flex-wrap gap-4 mt-2 text-xs">
+                                <p className="text-zinc-400">
+                                  Aktiverad: {formatDate(lead.production_enabled_at)}
+                                </p>
+                                {(lead as Business & { connected_phone?: { phone_number_display?: string; phone_number?: string } }).connected_phone && (
+                                  <p className="text-zinc-400">
+                                    Telefon: <span className="text-white font-mono">
+                                      {(lead as Business & { connected_phone?: { phone_number_display?: string; phone_number?: string } }).connected_phone?.phone_number_display ||
+                                       (lead as Business & { connected_phone?: { phone_number_display?: string; phone_number?: string } }).connected_phone?.phone_number}
+                                    </span>
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          )}
                           {lead.description && (
                             <div className="col-span-full">
                               <p className="text-zinc-500">Beskrivning</p>

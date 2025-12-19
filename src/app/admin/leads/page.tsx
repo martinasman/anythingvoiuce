@@ -15,6 +15,23 @@ export default async function LeadsPage() {
     .order('created_at', { ascending: false })
     .limit(100)
 
+  // Fetch phone numbers for production businesses
+  const { data: phoneNumbers } = await supabase
+    .from('phone_numbers')
+    .select('business_id, phone_number, phone_number_display, status')
+    .eq('status', 'active')
+
+  // Create a map of business_id to phone number
+  const phoneNumberMap = new Map(
+    phoneNumbers?.map(p => [p.business_id, p]) || []
+  )
+
+  // Attach phone number to each lead
+  const leadsWithPhones = leads?.map(lead => ({
+    ...lead,
+    connected_phone: phoneNumberMap.get(lead.id) || null
+  })) || []
+
   // Fetch stats
   const { count: totalCount } = await supabase
     .from('businesses')
@@ -53,7 +70,7 @@ export default async function LeadsPage() {
 
       <div>
         <h2 className="text-lg font-semibold text-white mb-4">Alla leads</h2>
-        <LeadsTableWrapper leads={leads || []} />
+        <LeadsTableWrapper leads={leadsWithPhones} />
       </div>
     </div>
   )
