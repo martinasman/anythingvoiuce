@@ -106,12 +106,12 @@ export async function POST(request: NextRequest) {
       console.log('[46elks] Connecting to Vapi phone:', vapiPhoneNumber)
 
       // Connect to Vapi's US phone number
-      // 46elks will forward the call to this number, and Vapi will handle it
-      // Using minimal format per 46elks docs - just connect and timeout
+      // 46elks will forward the call to this number
+      // callerid must be our own 46elks number for outbound leg
       return new NextResponse(
         JSON.stringify({
           connect: vapiPhoneNumber,
-          timeout: "30",
+          callerid: "+46850924581",
         }),
         { headers: { 'Content-Type': 'application/json' } }
       )
