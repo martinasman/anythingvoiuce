@@ -60,14 +60,14 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
   })
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       {/* Header */}
-      <header className="border-b border-zinc-800/50 px-6 py-4">
+      <header className="border-b border-slate-200 px-6 py-4 bg-white">
         <div className="max-w-3xl mx-auto">
-          <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">
+          <span className="text-xs font-semibold text-[#5A9BC7] uppercase tracking-wider">
             AI Receptionist Demo
           </span>
-          <h1 className="text-2xl font-bold mt-1">{business.name}</h1>
+          <h1 className="text-2xl font-bold mt-1 text-slate-900">{business.name}</h1>
         </div>
       </header>
 
@@ -77,7 +77,7 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
           {/* Description */}
           {business.description && (
             <div className="text-center">
-              <p className="text-lg text-zinc-300 max-w-xl mx-auto leading-relaxed">
+              <p className="text-lg text-slate-600 max-w-xl mx-auto leading-relaxed">
                 {business.description}
               </p>
             </div>
@@ -95,11 +95,11 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
 
           {/* Live Transcript */}
           {transcript && (
-            <div className="bg-zinc-900/50 rounded-xl p-6 border border-zinc-800">
-              <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
-                Transkript
+            <div className="bg-white rounded-sm p-6 border border-slate-200 shadow-sm">
+              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                Transcript
               </h3>
-              <div className="space-y-2 text-sm text-zinc-300 font-mono whitespace-pre-wrap">
+              <div className="space-y-2 text-sm text-slate-600 font-mono whitespace-pre-wrap">
                 {transcript}
               </div>
             </div>
@@ -111,7 +111,7 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
           </div>
 
           {/* Divider */}
-          <div className="border-t border-zinc-800" />
+          <div className="border-t border-slate-200" />
 
           {/* CTA Section */}
           <CTASection
@@ -122,15 +122,15 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-800/50 px-6 py-8 mt-12">
+      <footer className="border-t border-slate-200 px-6 py-8 mt-12 bg-white">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-zinc-500 text-sm">
+          <p className="text-slate-500 text-sm">
             Powered by{' '}
             <a
               href="https://anythinglabs.se"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-[#5A9BC7] hover:text-[#4683AE] transition-colors"
             >
               Anything Labs
             </a>

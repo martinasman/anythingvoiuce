@@ -30,11 +30,11 @@ export function CallButton({ status, volumeLevel, onStart, onEnd }: CallButtonPr
         {isActive && (
           <>
             <span
-              className="absolute inset-0 rounded-full bg-red-500/30 animate-pulse-ring"
+              className="absolute inset-0 rounded-full bg-rose-500/30 animate-pulse-ring"
               style={{ animationDelay: '0s' }}
             />
             <span
-              className="absolute inset-0 rounded-full bg-red-500/20 animate-pulse-ring"
+              className="absolute inset-0 rounded-full bg-rose-500/20 animate-pulse-ring"
               style={{ animationDelay: '0.5s' }}
             />
           </>
@@ -43,7 +43,7 @@ export function CallButton({ status, volumeLevel, onStart, onEnd }: CallButtonPr
         {/* Volume visualization ring */}
         {isActive && (
           <span
-            className="absolute inset-[-8px] rounded-full border-4 border-white/20 transition-all duration-100"
+            className="absolute inset-[-8px] rounded-full border-4 border-slate-300 transition-all duration-100"
             style={{
               transform: `scale(${1 + volumeLevel * 0.3})`,
               opacity: 0.3 + volumeLevel * 0.5,
@@ -58,10 +58,10 @@ export function CallButton({ status, volumeLevel, onStart, onEnd }: CallButtonPr
           className={cn(
             'relative w-32 h-32 rounded-full transition-all duration-300',
             'flex items-center justify-center',
-            'focus:outline-none focus:ring-4 focus:ring-offset-4 focus:ring-offset-zinc-950',
+            'focus:outline-none focus:ring-4 focus:ring-offset-4 focus:ring-offset-slate-50',
             isActive
-              ? 'bg-red-500 hover:bg-red-600 focus:ring-red-500/50'
-              : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500/50',
+              ? 'bg-rose-500 hover:bg-rose-600 focus:ring-rose-500/50'
+              : 'bg-[#5A9BC7] hover:bg-[#4683AE] focus:ring-[#5A9BC7]/50',
             (isConnecting || isEnded) && 'opacity-70 cursor-not-allowed'
           )}
         >
@@ -103,11 +103,11 @@ export function CallButton({ status, volumeLevel, onStart, onEnd }: CallButtonPr
       </div>
 
       {/* Status text */}
-      <p className="text-zinc-400 text-sm font-medium">
-        {status === 'idle' && 'Klicka för att ringa'}
-        {status === 'connecting' && 'Ansluter...'}
-        {status === 'active' && 'Samtal pågår - klicka för att avsluta'}
-        {status === 'ended' && 'Samtalet avslutat'}
+      <p className="text-slate-500 text-sm font-medium">
+        {status === 'idle' && 'Click to start a call'}
+        {status === 'connecting' && 'Connecting...'}
+        {status === 'active' && 'Call in progress - click to end'}
+        {status === 'ended' && 'Call ended'}
       </p>
     </div>
   )

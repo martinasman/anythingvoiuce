@@ -27,11 +27,11 @@ export function CTASection({ businessId, businessName }: CTASectionProps) {
         setIsSubmitted(true)
       } else {
         const data = await response.json()
-        setError(data.error || 'Något gick fel')
+        setError(data.error || 'Something went wrong')
       }
     } catch (err) {
       console.error('Error submitting interest:', err)
-      setError('Kunde inte skicka förfrågan')
+      setError('Could not send request')
     } finally {
       setIsLoading(false)
     }
@@ -39,10 +39,10 @@ export function CTASection({ businessId, businessName }: CTASectionProps) {
 
   if (isSubmitted) {
     return (
-      <div className="text-center p-8 bg-green-900/20 rounded-2xl border border-green-500/30">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
+      <div className="text-center p-8 bg-emerald-50 rounded-sm border border-emerald-200">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-emerald-100 flex items-center justify-center">
           <svg
-            className="w-8 h-8 text-green-400"
+            className="w-8 h-8 text-emerald-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -55,31 +55,31 @@ export function CTASection({ businessId, businessName }: CTASectionProps) {
             />
           </svg>
         </div>
-        <h3 className="text-2xl font-bold text-white mb-2">Tack för ditt intresse!</h3>
-        <p className="text-zinc-300">
-          Vi kontaktar dig inom kort för att diskutera hur vi kan hjälpa{' '}
-          <span className="text-white font-medium">{businessName}</span>.
+        <h3 className="text-2xl font-bold text-slate-900 mb-2">Thank you for your interest!</h3>
+        <p className="text-slate-600">
+          We&apos;ll contact you shortly to discuss how we can help{' '}
+          <span className="text-slate-900 font-medium">{businessName}</span>.
         </p>
       </div>
     )
   }
 
   return (
-    <div className="text-center p-8 bg-zinc-900 rounded-2xl border border-zinc-700">
-      <h3 className="text-2xl font-bold text-white mb-2">Gillar du det du hör?</h3>
-      <p className="text-zinc-300 mb-6 max-w-md mx-auto">
-        Låt oss visa hur en AI-receptionist kan hjälpa{' '}
-        <span className="text-white font-medium">{businessName}</span> att aldrig missa ett samtal.
+    <div className="text-center p-8 bg-white rounded-sm border border-slate-200 shadow-sm">
+      <h3 className="text-2xl font-bold text-slate-900 mb-2">Like what you hear?</h3>
+      <p className="text-slate-600 mb-6 max-w-md mx-auto">
+        Let us show you how an AI receptionist can help{' '}
+        <span className="text-slate-900 font-medium">{businessName}</span> never miss a call.
       </p>
 
       {error && (
-        <p className="text-red-400 text-sm mb-4">{error}</p>
+        <p className="text-rose-500 text-sm mb-4">{error}</p>
       )}
 
       <button
         onClick={handleInterest}
         disabled={isLoading}
-        className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-8 py-4 bg-[#5A9BC7] text-white font-semibold rounded-sm hover:bg-[#4683AE] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? (
           <span className="flex items-center gap-2">
@@ -99,15 +99,15 @@ export function CTASection({ businessId, businessName }: CTASectionProps) {
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
               />
             </svg>
-            Skickar...
+            Sending...
           </span>
         ) : (
-          'Jag är intresserad - kontakta mig!'
+          'I\'m interested - contact me!'
         )}
       </button>
 
-      <p className="text-zinc-500 text-sm mt-4">
-        Vi hör av oss inom 24 timmar
+      <p className="text-slate-500 text-sm mt-4">
+        We&apos;ll get back to you within 24 hours
       </p>
     </div>
   )

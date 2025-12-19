@@ -25,7 +25,7 @@ export function AddEmailModal({
     setError('')
 
     if (!email && !contactEmail) {
-      setError('Minst en email krävs')
+      setError('At least one email is required')
       return
     }
 
@@ -53,59 +53,59 @@ export function AddEmailModal({
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-zinc-900 rounded-xl border border-zinc-800 p-6 max-w-md w-full mx-4">
-        <h3 className="text-lg font-semibold text-white mb-4">
-          Lägg till email för {businessName}
+    <div className="fixed inset-0 bg-slate-900/50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-sm border border-slate-200 p-6 max-w-md w-full mx-4 shadow-xl">
+        <h3 className="text-lg font-semibold text-slate-900 mb-4">
+          Add email for {businessName}
         </h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm text-zinc-400 mb-2">
-              Företags-email (valfritt)
+            <label className="block text-sm text-slate-600 mb-2">
+              Business email (optional)
             </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="info@företag.se"
-              className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500"
+              placeholder="info@company.com"
+              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#5A9BC7] focus:ring-1 focus:ring-[#5A9BC7]"
             />
           </div>
 
           <div>
-            <label className="block text-sm text-zinc-400 mb-2">
-              Kontaktperson email (rekommenderat)
+            <label className="block text-sm text-slate-600 mb-2">
+              Contact person email (recommended)
             </label>
             <input
               type="email"
               value={contactEmail}
               onChange={(e) => setContactEmail(e.target.value)}
-              placeholder="namn@företag.se"
-              className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500"
+              placeholder="name@company.com"
+              className="w-full px-3 py-2 bg-white border border-slate-300 rounded-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#5A9BC7] focus:ring-1 focus:ring-[#5A9BC7]"
             />
-            <p className="text-xs text-zinc-500 mt-1">
-              Används för outreach-emails
+            <p className="text-xs text-slate-400 mt-1">
+              Used for outreach emails
             </p>
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-rose-500 text-sm">{error}</p>}
 
           <div className="flex gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-sm transition-colors disabled:opacity-50"
             >
-              Avbryt
+              Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 bg-[#5A9BC7] hover:bg-[#4683AE] text-white rounded-sm transition-colors disabled:opacity-50"
             >
-              {loading ? 'Sparar...' : 'Spara'}
+              {loading ? 'Saving...' : 'Save'}
             </button>
           </div>
         </form>

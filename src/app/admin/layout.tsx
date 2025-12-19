@@ -6,19 +6,22 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-zinc-950 flex">
+    <div className="min-h-screen bg-slate-50 flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col">
-        <div className="p-6 border-b border-zinc-800">
-          <h1 className="text-xl font-bold text-white">Anything Voice</h1>
-          <p className="text-sm text-zinc-500 mt-1">Admin Dashboard</p>
+      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col">
+        <div className="p-6 border-b border-slate-200">
+          <Link href="/" className="flex items-center gap-1">
+            <span className="font-display text-xl text-[#275379]">Anything</span>
+            <span className="text-xl font-semibold text-slate-900">Voice</span>
+          </Link>
+          <p className="text-sm text-slate-500 mt-1">Admin Dashboard</p>
         </div>
         <nav className="flex-1 p-4">
           <ul className="space-y-1">
             <li>
               <Link
                 href="/admin/leads"
-                className="flex items-center gap-3 px-4 py-2.5 text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-sm transition-colors"
               >
                 <svg
                   className="w-5 h-5"
@@ -39,7 +42,7 @@ export default function AdminLayout({
             <li>
               <Link
                 href="/admin/pipeline"
-                className="flex items-center gap-3 px-4 py-2.5 text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+                className="flex items-center gap-3 px-4 py-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-sm transition-colors"
               >
                 <svg
                   className="w-5 h-5"
@@ -59,10 +62,10 @@ export default function AdminLayout({
             </li>
           </ul>
         </nav>
-        <div className="p-4 border-t border-zinc-800">
+        <div className="p-4 border-t border-slate-200">
           <Link
             href="/"
-            className="flex items-center gap-3 px-4 py-2.5 text-zinc-500 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+            className="flex items-center gap-3 px-4 py-2.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-sm transition-colors"
           >
             <svg
               className="w-5 h-5"

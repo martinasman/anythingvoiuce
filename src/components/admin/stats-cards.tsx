@@ -7,15 +7,15 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon, color }: StatCardProps) {
   return (
-    <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+    <div className="bg-white rounded-sm p-6 border border-slate-200 shadow-sm">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-zinc-400">{label}</p>
+          <p className="text-sm text-slate-500">{label}</p>
           <p className={`text-3xl font-bold mt-1 ${color}`}>
             {value.toLocaleString()}
           </p>
         </div>
-        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${color} bg-current/10`}>
+        <div className={`w-12 h-12 rounded-sm flex items-center justify-center ${color} bg-current/10`}>
           {icon}
         </div>
       </div>
@@ -34,9 +34,9 @@ export function StatsCards({ total, interested, agentCreated, contacted = 0 }: S
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard
-        label="Totalt"
+        label="Total"
         value={total}
-        color="text-blue-400"
+        color="text-[#5A9BC7]"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -49,9 +49,9 @@ export function StatsCards({ total, interested, agentCreated, contacted = 0 }: S
         }
       />
       <StatCard
-        label="Agenter skapade"
+        label="Agents Created"
         value={agentCreated}
-        color="text-purple-400"
+        color="text-violet-500"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -64,9 +64,9 @@ export function StatsCards({ total, interested, agentCreated, contacted = 0 }: S
         }
       />
       <StatCard
-        label="Intresserade"
+        label="Interested"
         value={interested}
-        color="text-green-400"
+        color="text-emerald-500"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -79,9 +79,9 @@ export function StatsCards({ total, interested, agentCreated, contacted = 0 }: S
         }
       />
       <StatCard
-        label="Kontaktade"
+        label="Contacted"
         value={contacted}
-        color="text-yellow-400"
+        color="text-amber-500"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path

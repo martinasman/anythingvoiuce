@@ -1,20 +1,20 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 
-const geist = Geist({
-  variable: '--font-geist',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const playfair = Playfair_Display({
+  variable: '--font-playfair',
   subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
-  title: 'Anything Voice - AI Receptionist',
-  description: 'AI-powered voice receptionists for Swedish businesses',
+  title: 'AnythingVoice - AI Voice Receptionist',
+  description: 'AI-powered voice receptionist that handles customer calls 24/7, schedules appointments, and answers questions.',
 }
 
 export default function RootLayout({
@@ -23,9 +23,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="sv">
+    <html lang="en">
       <body
-        className={`${geist.variable} ${geistMono.variable} antialiased bg-zinc-950 text-white font-sans`}
+        className={`${inter.variable} ${playfair.variable} antialiased bg-slate-50 text-slate-900 font-sans`}
       >
         {children}
       </body>
