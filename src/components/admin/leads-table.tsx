@@ -3,12 +3,12 @@
 import Link from 'next/link'
 import { Fragment, useState } from 'react'
 import type { Business } from '@/types/database'
-import { AddEmailModal } from './add-email-modal'
 
 interface LeadsTableProps {
   leads: Business[]
   onRefresh?: () => void
-  onSendEmail?: (businessId: string) => Promise<void>
+  onSendEmail?: (businessId: string, emailData?: { to: string; subject: string }) => Promise<void>
+  onDelete?: (businessId: string) => Promise<void>
 }
 
 interface ActivateModalState {
@@ -21,6 +21,21 @@ interface ActivateModalState {
     phoneDisplay: string
     assistantName?: string
   } | null
+}
+
+interface EmailModalState {
+  isOpen: boolean
+  business: Business | null
+  isLoading: boolean
+  error: string | null
+  success: boolean
+}
+
+interface DeleteModalState {
+  isOpen: boolean
+  business: Business | null
+  isLoading: boolean
+  error: string | null
 }
 
 const STATUS_STYLES: Record<string, { bg: string; text: string }> = {
@@ -65,15 +80,33 @@ function formatDate(dateString: string | null): string {
   })
 }
 
-export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
+export function LeadsTable({ leads, onRefresh, onSendEmail, onDelete }: LeadsTableProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [sendingEmailId, setSendingEmailId] = useState<string | null>(null)
   const [modal, setModal] = useState<ActivateModalState>({
     isOpen: false,
     business: null,
     isLoading: false,
     error: null,
     success: null,
+  })
+
+  // Email modal state
+  const [emailModal, setEmailModal] = useState<EmailModalState>({
+    isOpen: false,
+    business: null,
+    isLoading: false,
+    error: null,
+    success: false,
+  })
+  const [emailTo, setEmailTo] = useState('')
+  const [emailSubject, setEmailSubject] = useState('')
+
+  // Delete modal state
+  const [deleteModal, setDeleteModal] = useState<DeleteModalState>({
+    isOpen: false,
+    business: null,
+    isLoading: false,
+    error: null,
   })
 
   // Form state for activation
@@ -90,7 +123,6 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
       error: null,
       success: null,
     })
-    // Pre-fill with business data if available
     setCustomerEmail(business.email || business.contact_email || '')
     setCustomerName(business.contact_name || '')
     setWhatsappPhone('')
@@ -108,6 +140,49 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
     if (modal.success && onRefresh) {
       onRefresh()
     }
+  }
+
+  const openEmailModal = (business: Business) => {
+    setEmailModal({
+      isOpen: true,
+      business,
+      isLoading: false,
+      error: null,
+      success: false,
+    })
+    setEmailTo(business.email || business.contact_email || '')
+    setEmailSubject(`${business.name} - Testa er AI-receptionist gratis`)
+  }
+
+  const closeEmailModal = () => {
+    setEmailModal({
+      isOpen: false,
+      business: null,
+      isLoading: false,
+      error: null,
+      success: false,
+    })
+    if (emailModal.success && onRefresh) {
+      onRefresh()
+    }
+  }
+
+  const openDeleteModal = (business: Business) => {
+    setDeleteModal({
+      isOpen: true,
+      business,
+      isLoading: false,
+      error: null,
+    })
+  }
+
+  const closeDeleteModal = () => {
+    setDeleteModal({
+      isOpen: false,
+      business: null,
+      isLoading: false,
+      error: null,
+    })
   }
 
   const handleActivate = async () => {
@@ -147,6 +222,41 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
         ...prev,
         isLoading: false,
         error: err instanceof Error ? err.message : 'Something went wrong',
+      }))
+    }
+  }
+
+  const handleSendEmail = async () => {
+    if (!emailModal.business || !emailTo || !onSendEmail) return
+
+    setEmailModal((prev) => ({ ...prev, isLoading: true, error: null }))
+
+    try {
+      await onSendEmail(emailModal.business.id, { to: emailTo, subject: emailSubject })
+      setEmailModal((prev) => ({ ...prev, isLoading: false, success: true }))
+    } catch (err) {
+      setEmailModal((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: err instanceof Error ? err.message : 'Kunde inte skicka email',
+      }))
+    }
+  }
+
+  const handleDelete = async () => {
+    if (!deleteModal.business || !onDelete) return
+
+    setDeleteModal((prev) => ({ ...prev, isLoading: true, error: null }))
+
+    try {
+      await onDelete(deleteModal.business.id)
+      closeDeleteModal()
+      if (onRefresh) onRefresh()
+    } catch (err) {
+      setDeleteModal((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: err instanceof Error ? err.message : 'Kunde inte ta bort',
       }))
     }
   }
@@ -194,8 +304,9 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
               const statusStyle = STATUS_STYLES[lead.status] || STATUS_STYLES.pending
               const canActivate = lead.vapi_assistant_id && !lead.is_production
               const canSwitch = lead.vapi_assistant_id && lead.is_production
-              const canSendEmail = lead.vapi_assistant_id && lead.preview_url && !lead.email_sent_at
+              const canSendEmail = lead.vapi_assistant_id && lead.preview_url
               const hasEmail = lead.email || lead.contact_email
+              const canDelete = !lead.is_production
 
               return (
                 <Fragment key={lead.id}>
@@ -253,44 +364,17 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
                             Demo
                           </Link>
                         )}
-                        {/* Send Email button */}
+                        {/* Send Email button - available if agent exists */}
                         {canSendEmail && hasEmail && onSendEmail && (
                           <button
-                            onClick={async (e) => {
+                            onClick={(e) => {
                               e.stopPropagation()
-                              setSendingEmailId(lead.id)
-                              try {
-                                await onSendEmail(lead.id)
-                              } finally {
-                                setSendingEmailId(null)
-                              }
+                              openEmailModal(lead)
                             }}
-                            disabled={sendingEmailId === lead.id}
-                            className="px-2.5 py-1 text-xs font-medium bg-purple-600 hover:bg-purple-700 disabled:bg-zinc-700 text-white rounded transition-colors flex items-center gap-1"
+                            className="px-2.5 py-1 text-xs font-medium bg-purple-600 hover:bg-purple-700 text-white rounded transition-colors"
                           >
-                            {sendingEmailId === lead.id ? (
-                              <>
-                                <svg className="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
-                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                                </svg>
-                                Skickar...
-                              </>
-                            ) : (
-                              'Skicka demo'
-                            )}
+                            Skicka demo
                           </button>
-                        )}
-                        {/* Customer login button */}
-                        {lead.is_production && hasEmail && (
-                          <Link
-                            href={`/login?email=${encodeURIComponent(lead.email || lead.contact_email || '')}`}
-                            target="_blank"
-                            onClick={(e) => e.stopPropagation()}
-                            className="px-2.5 py-1 text-xs font-medium bg-zinc-700 hover:bg-zinc-600 text-white rounded transition-colors"
-                          >
-                            Kundlogin
-                          </Link>
                         )}
                         {canActivate && (
                           <button
@@ -312,6 +396,21 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
                             className="px-2.5 py-1 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
                           >
                             Byt till aktiv
+                          </button>
+                        )}
+                        {/* Delete button - only for non-production */}
+                        {canDelete && onDelete && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              openDeleteModal(lead)
+                            }}
+                            className="px-2 py-1 text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded transition-colors"
+                            title="Ta bort"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
                           </button>
                         )}
                         <svg
@@ -404,12 +503,168 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
         </table>
       </div>
 
+      {/* Email Modal */}
+      {emailModal.isOpen && emailModal.business && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl w-full max-w-lg mx-4 p-6">
+            {emailModal.success ? (
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Email skickat!</h3>
+                <p className="text-zinc-400 mb-4">
+                  Demo-mailet har skickats till {emailTo}
+                </p>
+                <button
+                  onClick={closeEmailModal}
+                  className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                >
+                  Stäng
+                </button>
+              </div>
+            ) : (
+              <>
+                <h3 className="text-xl font-bold text-white mb-2">Skicka demo-email</h3>
+                <p className="text-zinc-400 text-sm mb-6">
+                  Skicka en demo till {emailModal.business.name}
+                </p>
+
+                {emailModal.error && (
+                  <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                    <p className="text-red-400 text-sm">{emailModal.error}</p>
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-1">Till *</label>
+                    <input
+                      type="email"
+                      value={emailTo}
+                      onChange={(e) => setEmailTo(e.target.value)}
+                      placeholder="mottagare@foretag.se"
+                      className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-zinc-400 mb-1">Ämne</label>
+                    <input
+                      type="text"
+                      value={emailSubject}
+                      onChange={(e) => setEmailSubject(e.target.value)}
+                      placeholder="Ämnesrad"
+                      className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  <div className="p-3 bg-zinc-800/50 border border-zinc-700 rounded-lg">
+                    <p className="text-xs text-zinc-500 mb-2">Förhandsvisning av innehåll:</p>
+                    <p className="text-zinc-300 text-sm">
+                      Vi har byggt en AI-receptionist speciellt anpassad för <strong>{emailModal.business.name}</strong>.
+                      Den kan svara på kundsamtal dygnet runt, boka tider automatiskt, och besvara vanliga frågor om era tjänster.
+                    </p>
+                    <p className="text-zinc-400 text-xs mt-2">
+                      + Länk till demo: {emailModal.business.preview_url}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-3 mt-6">
+                  <button
+                    onClick={closeEmailModal}
+                    disabled={emailModal.isLoading}
+                    className="flex-1 py-2 text-zinc-400 hover:text-white transition-colors"
+                  >
+                    Avbryt
+                  </button>
+                  <button
+                    onClick={handleSendEmail}
+                    disabled={emailModal.isLoading || !emailTo}
+                    className="flex-1 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                  >
+                    {emailModal.isLoading ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Skickar...
+                      </>
+                    ) : (
+                      'Skicka email'
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModal.isOpen && deleteModal.business && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl w-full max-w-md mx-4 p-6">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Ta bort lead?</h3>
+              <p className="text-zinc-400 mb-2">
+                Är du säker på att du vill ta bort <strong className="text-white">{deleteModal.business.name}</strong>?
+              </p>
+              <p className="text-zinc-500 text-sm mb-6">
+                Detta kommer att ta bort lead-data, demo och Vapi-agent. Denna åtgärd kan inte ångras.
+              </p>
+
+              {deleteModal.error && (
+                <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                  <p className="text-red-400 text-sm">{deleteModal.error}</p>
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={closeDeleteModal}
+                  disabled={deleteModal.isLoading}
+                  className="flex-1 py-2 bg-zinc-700 hover:bg-zinc-600 text-white font-medium rounded-lg transition-colors"
+                >
+                  Avbryt
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleteModal.isLoading}
+                  className="flex-1 py-2 bg-red-600 hover:bg-red-700 disabled:bg-zinc-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                >
+                  {deleteModal.isLoading ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Tar bort...
+                    </>
+                  ) : (
+                    'Ta bort'
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Activation Modal */}
       {modal.isOpen && modal.business && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
           <div className="bg-zinc-900 border border-zinc-700 rounded-xl w-full max-w-md mx-4 p-6">
             {modal.success ? (
-              // Success state
               <div className="text-center">
                 <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -436,7 +691,6 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
                 </button>
               </div>
             ) : (
-              // Form state
               <>
                 <h3 className="text-xl font-bold text-white mb-2">
                   {modal.business.is_production ? 'Byt aktiv assistent' : 'Aktivera produktion'}
@@ -456,9 +710,7 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm text-zinc-400 mb-1">
-                      Kund-email *
-                    </label>
+                    <label className="block text-sm text-zinc-400 mb-1">Kund-email *</label>
                     <input
                       type="email"
                       value={customerEmail}
@@ -469,9 +721,7 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-zinc-400 mb-1">
-                      Kontaktnamn
-                    </label>
+                    <label className="block text-sm text-zinc-400 mb-1">Kontaktnamn</label>
                     <input
                       type="text"
                       value={customerName}
@@ -482,9 +732,7 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-zinc-400 mb-1">
-                      WhatsApp-nummer (valfritt)
-                    </label>
+                    <label className="block text-sm text-zinc-400 mb-1">WhatsApp-nummer (valfritt)</label>
                     <input
                       type="tel"
                       value={whatsappPhone}
@@ -495,9 +743,7 @@ export function LeadsTable({ leads, onRefresh, onSendEmail }: LeadsTableProps) {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-zinc-400 mb-1">
-                      Telegram Chat ID (valfritt)
-                    </label>
+                    <label className="block text-sm text-zinc-400 mb-1">Telegram Chat ID (valfritt)</label>
                     <input
                       type="text"
                       value={telegramChatId}

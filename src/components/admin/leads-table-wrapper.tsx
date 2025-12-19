@@ -11,28 +11,46 @@ interface LeadsTableWrapperProps {
 export function LeadsTableWrapper({ leads }: LeadsTableWrapperProps) {
   const router = useRouter()
 
-  const handleSendEmail = async (businessId: string) => {
-    try {
-      const response = await fetch('/api/email/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ businessId }),
-      })
+  const handleSendEmail = async (businessId: string, emailData?: { to: string; subject: string }) => {
+    const response = await fetch('/api/email/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        businessId,
+        to: emailData?.to,
+        subject: emailData?.subject,
+      }),
+    })
 
-      const data = await response.json()
+    const data = await response.json()
 
-      if (!response.ok) {
-        alert(`Fel: ${data.error || 'Kunde inte skicka email'}`)
-        return
-      }
-
-      alert(`Email skickat till ${data.sentTo}`)
-      router.refresh()
-    } catch (error) {
-      console.error('Send email error:', error)
-      alert('Ett fel uppstod vid skickande av email')
+    if (!response.ok) {
+      throw new Error(data.error || 'Kunde inte skicka email')
     }
+
+    router.refresh()
   }
 
-  return <LeadsTable leads={leads} onSendEmail={handleSendEmail} />
+  const handleDelete = async (businessId: string) => {
+    const response = await fetch(`/api/business/${businessId}/delete`, {
+      method: 'DELETE',
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Kunde inte ta bort')
+    }
+
+    router.refresh()
+  }
+
+  return (
+    <LeadsTable
+      leads={leads}
+      onSendEmail={handleSendEmail}
+      onDelete={handleDelete}
+      onRefresh={() => router.refresh()}
+    />
+  )
 }

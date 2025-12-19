@@ -60,7 +60,7 @@ export function Navbar() {
           </div>
 
           {/* CTA */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <Link
               href="/admin/pipeline"
               className={cn(
@@ -72,9 +72,22 @@ export function Navbar() {
             >
               Dashboard
             </Link>
-            <Button size="sm">
-              Try Demo
-            </Button>
+            <Link
+              href="/login"
+              className={cn(
+                'hidden sm:inline-flex text-sm font-medium transition-colors',
+                scrolled
+                  ? 'text-slate-600 hover:text-slate-900'
+                  : 'text-slate-700 hover:text-slate-900'
+              )}
+            >
+              Logga in
+            </Link>
+            <Link href="#demo">
+              <Button size="sm">
+                Testa Demo
+              </Button>
+            </Link>
           </div>
         </div>
       </Container>

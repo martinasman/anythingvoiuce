@@ -5,7 +5,7 @@ import { sendOutreachEmail } from '@/lib/email/client'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { businessId } = body
+    const { businessId, to, subject } = body
 
     if (!businessId) {
       return NextResponse.json(
@@ -30,17 +30,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate business has required fields
-    const contactEmail = business.contact_email || business.email
+    // Use custom recipient if provided, otherwise use business email
+    const contactEmail = to || business.contact_email || business.email
     if (!contactEmail && !process.env.DEV_EMAIL_OVERRIDE) {
       return NextResponse.json(
-        { error: 'Business has no contact email' },
+        { error: 'No recipient email provided' },
         { status: 400 }
       )
     }
 
-    // Dev mode: override recipient to test email
-    const recipientEmail = process.env.DEV_EMAIL_OVERRIDE || contactEmail
+    // Dev mode: override recipient to test email (unless custom to is provided)
+    const recipientEmail = process.env.DEV_EMAIL_OVERRIDE && !to ? process.env.DEV_EMAIL_OVERRIDE : contactEmail
+
+    // Use custom subject if provided
+    const emailSubject = subject || `${business.name} - Testa er AI-receptionist gratis`
 
     if (!business.preview_url || !business.vapi_assistant_id) {
       return NextResponse.json(
@@ -65,6 +68,7 @@ export async function POST(request: NextRequest) {
       businessName: business.name || 'Ert företag',
       previewUrl: business.preview_url,
       trackingToken,
+      subject: emailSubject,
     })
 
     if (!result.success) {

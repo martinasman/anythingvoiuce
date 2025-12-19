@@ -8,6 +8,7 @@ export interface SendOutreachEmailParams {
   businessName: string
   previewUrl: string
   trackingToken: string
+  subject?: string
 }
 
 export interface SendEmailResult {
@@ -21,6 +22,7 @@ export async function sendOutreachEmail({
   businessName,
   previewUrl,
   trackingToken,
+  subject,
 }: SendOutreachEmailParams): Promise<SendEmailResult> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
@@ -28,11 +30,14 @@ export async function sendOutreachEmail({
   const openTrackingUrl = `${baseUrl}/api/track/open?token=${trackingToken}`
   const clickTrackingUrl = `${baseUrl}/api/track/click?token=${trackingToken}`
 
+  // Use custom subject or default
+  const emailSubject = subject || `${businessName} - Testa er AI-receptionist gratis`
+
   try {
     const { data, error } = await resend.emails.send({
       from: 'Anything Labs <hej@anythinglabs.net>',
       to: [to],
-      subject: `${businessName} - Testa er AI-receptionist gratis`,
+      subject: emailSubject,
       react: OutreachEmail({
         businessName,
         previewUrl: clickTrackingUrl,
