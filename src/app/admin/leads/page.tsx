@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server'
-import { LeadsTable } from '@/components/admin/leads-table'
+import { LeadsTableWrapper } from '@/components/admin/leads-table-wrapper'
 import { StatsCards } from '@/components/admin/stats-cards'
 
 export const dynamic = 'force-dynamic'
@@ -53,7 +53,7 @@ export default async function LeadsPage() {
 
       <div>
         <h2 className="text-lg font-semibold text-white mb-4">Alla leads</h2>
-        <LeadsTable leads={leads || []} />
+        <LeadsTableWrapper leads={leads || []} />
       </div>
     </div>
   )

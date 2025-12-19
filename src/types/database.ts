@@ -47,6 +47,7 @@ export interface Business {
   contact_name: string | null
   contact_email: string | null
   contact_phone: string | null
+  email_tracking_token: string | null
 }
 
 export interface ServiceItem {

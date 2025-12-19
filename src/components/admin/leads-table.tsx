@@ -6,6 +6,7 @@ import type { Business } from '@/types/database'
 
 interface LeadsTableProps {
   leads: Business[]
+  onSendEmail?: (businessId: string) => Promise<void>
 }
 
 const STATUS_STYLES: Record<string, { bg: string; text: string }> = {
@@ -50,8 +51,9 @@ function formatDate(dateString: string | null): string {
   })
 }
 
-export function LeadsTable({ leads }: LeadsTableProps) {
+export function LeadsTable({ leads, onSendEmail }: LeadsTableProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [sendingEmail, setSendingEmail] = useState<string | null>(null)
 
   if (leads.length === 0) {
     return (
@@ -80,6 +82,9 @@ export function LeadsTable({ leads }: LeadsTableProps) {
             </th>
             <th className="px-6 py-3 text-left text-xs font-semibold text-zinc-400 uppercase tracking-wider">
               Status
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+              Email
             </th>
             <th className="px-6 py-3 text-left text-xs font-semibold text-zinc-400 uppercase tracking-wider">
               Skapad
@@ -128,6 +133,36 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                       {STATUS_LABELS[lead.status] || lead.status}
                     </span>
                   </td>
+                  <td className="px-6 py-4">
+                    {lead.email_sent_at ? (
+                      <div className="flex items-center gap-2">
+                        <span className="text-green-400 text-xs">Skickat</span>
+                        {lead.email_opened_at && (
+                          <span className="text-blue-400 text-xs" title="Öppnat">
+                            👁
+                          </span>
+                        )}
+                      </div>
+                    ) : lead.status === 'agent_created' && onSendEmail ? (
+                      <button
+                        onClick={async (e) => {
+                          e.stopPropagation()
+                          setSendingEmail(lead.id)
+                          try {
+                            await onSendEmail(lead.id)
+                          } finally {
+                            setSendingEmail(null)
+                          }
+                        }}
+                        disabled={sendingEmail === lead.id}
+                        className="text-xs px-2 py-1 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:cursor-not-allowed text-white rounded transition-colors"
+                      >
+                        {sendingEmail === lead.id ? 'Skickar...' : 'Skicka'}
+                      </button>
+                    ) : (
+                      <span className="text-zinc-500 text-xs">-</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4 text-zinc-400 text-sm">
                     {formatDate(lead.created_at)}
                   </td>
@@ -161,7 +196,7 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                 </tr>
                 {isExpanded && (
                   <tr>
-                    <td colSpan={6} className="px-6 py-4 bg-zinc-800/20">
+                    <td colSpan={7} className="px-6 py-4 bg-zinc-800/20">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                         <div>
                           <p className="text-zinc-500">Email</p>
