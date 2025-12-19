@@ -59,9 +59,8 @@ export async function POST(request: NextRequest) {
       // Return a message saying the number is not in service
       return new NextResponse(
         JSON.stringify({
-          say: 'Det nummer du har ringt är inte i tjänst.',
-          voice: 'Elvira',
-          next: { hangup: 'reject' },
+          play: 'https://api.46elks.com/static/sounds/swe-standard/busy.wav',
+          next: { hangup: 'busy' },
         }),
         { headers: { 'Content-Type': 'application/json' } }
       )
@@ -78,9 +77,8 @@ export async function POST(request: NextRequest) {
       console.error('[46elks] Business or assistant not found:', phoneNumber.business_id)
       return new NextResponse(
         JSON.stringify({
-          say: 'Tyvärr kan vi inte koppla ditt samtal just nu. Försök igen senare.',
-          voice: 'Elvira',
-          next: { hangup: 'reject' },
+          play: 'https://api.46elks.com/static/sounds/swe-standard/busy.wav',
+          next: { hangup: 'busy' },
         }),
         { headers: { 'Content-Type': 'application/json' } }
       )
@@ -109,19 +107,11 @@ export async function POST(request: NextRequest) {
 
       // Connect to Vapi's US phone number
       // 46elks will forward the call to this number, and Vapi will handle it
+      // Using minimal format per 46elks docs - just connect and timeout
       return new NextResponse(
         JSON.stringify({
           connect: vapiPhoneNumber,
-          callerid: from, // Pass through original caller ID
-          timeout: 30, // 30 seconds to connect
-          busy: {
-            say: 'Numret är upptaget. Försök igen senare.',
-            voice: 'Elvira',
-          },
-          failed: {
-            say: 'Kunde inte koppla samtalet. Försök igen senare.',
-            voice: 'Elvira',
-          },
+          timeout: "30",
         }),
         { headers: { 'Content-Type': 'application/json' } }
       )
@@ -131,9 +121,8 @@ export async function POST(request: NextRequest) {
     console.error('[46elks] No Vapi phone number configured for:', to)
     return new NextResponse(
       JSON.stringify({
-        say: 'Vår AI-receptionist är inte tillgänglig just nu. Försök igen senare.',
-        voice: 'Elvira',
-        next: { hangup: 'reject' },
+        play: 'https://api.46elks.com/static/sounds/swe-standard/busy.wav',
+        next: { hangup: 'busy' },
       }),
       { headers: { 'Content-Type': 'application/json' } }
     )
@@ -141,9 +130,8 @@ export async function POST(request: NextRequest) {
     console.error('[46elks webhook] Error:', error)
     return new NextResponse(
       JSON.stringify({
-        say: 'Ett tekniskt fel uppstod. Försök igen senare.',
-        voice: 'Elvira',
-        next: { hangup: 'reject' },
+        play: 'https://api.46elks.com/static/sounds/swe-standard/busy.wav',
+        next: { hangup: 'busy' },
       }),
       { headers: { 'Content-Type': 'application/json' } }
     )
