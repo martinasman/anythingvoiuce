@@ -7,7 +7,18 @@
       "Bash(npm uninstall:*)",
       "Bash(curl:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx next dev)",
+      "Bash(cat:*)",
+      "Bash(./node_modules/.bin/next dev:*)",
+      "Bash(bash -i -c \"npm run dev\")",
+      "Bash(echo:*)",
+      "Bash(export PATH=\"/opt/homebrew/bin:$PATH\")",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(tree:*)"
     ]
   }
 }
