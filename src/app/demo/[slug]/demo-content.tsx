@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useCallback } from 'react'
 import { useVapi } from '@/hooks/use-vapi'
 import { CallButton } from '@/components/demo/call-button'
@@ -63,11 +64,22 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
     <div className="min-h-screen bg-slate-50 text-slate-900">
       {/* Header */}
       <header className="border-b border-slate-200 px-6 py-4 bg-white">
-        <div className="max-w-3xl mx-auto">
-          <span className="text-xs font-semibold text-[#5A9BC7] uppercase tracking-wider">
-            AI Receptionist Demo
-          </span>
-          <h1 className="text-2xl font-bold mt-1 text-slate-900">{business.name}</h1>
+        <div className="max-w-3xl mx-auto flex items-center justify-between">
+          <div className="flex-1">
+            <span className="text-xs font-semibold text-[#5A9BC7] uppercase tracking-wider">
+              AI Receptionist Demo
+            </span>
+            <h1 className="text-2xl font-bold mt-1 text-slate-900">{business.name}</h1>
+          </div>
+          <Link
+            href="/"
+            className="ml-6 flex items-center gap-2 px-4 py-2 bg-[#5A9BC7] hover:bg-[#4683AE] text-white rounded-sm transition-colors font-medium text-sm whitespace-nowrap"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Main Website
+          </Link>
         </div>
       </header>
 
