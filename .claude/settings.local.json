@@ -32,7 +32,11 @@
       "Bash(node verify-db.js:*)",
       "Bash(supabase db push:*)",
       "Bash(node setup-production.js:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(git branch:*)",
+      "Bash(./update-webhook.sh:*)",
+      "Bash(node update-46elks-webhook.js:*)",
+      "Bash(node:*)"
     ]
   }
 }

@@ -133,57 +133,37 @@ export async function POST(
       }
     }
 
-    // Step 5: Allocate Swedish 46elks number
-    const allocateResult = await allocateNumber({ country: 'se', voice: true })
+    // ⚠️ DISABLED: Automatic number allocation - DO NOT BUY NUMBERS AUTOMATICALLY!
+    // Step 5: Allocate Swedish 46elks number - COMMENTED OUT TO PREVENT COSTS
+    //
+    // MANUAL SETUP REQUIRED:
+    // 1. Manually allocate a 46elks number at https://46elks.com
+    // 2. Configure webhook via update-46elks-webhook.js script
+    // 3. Add phone number record to database manually
+    //
+    // const allocateResult = await allocateNumber({ country: 'se', voice: true })
+    // if (!allocateResult.success) {
+    //   return NextResponse.json({ error: 'Failed to allocate Swedish phone number' }, { status: 500 })
+    // }
+    // const elksNumber = allocateResult.number
 
-    if (!allocateResult.success) {
-      console.error('Failed to allocate phone number:', allocateResult.error)
-      return NextResponse.json(
-        { error: 'Failed to allocate Swedish phone number: ' + allocateResult.error },
-        { status: 500 }
-      )
-    }
+    // For now, return error instructing manual setup
+    return NextResponse.json(
+      {
+        error: 'Automatic phone allocation is disabled. Please contact admin to manually allocate a phone number.',
+        manualSteps: [
+          '1. Allocate 46elks number at https://46elks.com',
+          '2. Run: node update-46elks-webhook.js <production-url>',
+          '3. Contact admin to complete setup'
+        ]
+      },
+      { status: 400 }
+    )
 
-    const elksNumber = allocateResult.number
-
-    // Step 6: Configure 46elks to forward to webhook
-    const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/46elks`
-    const configResult = await configureNumber(elksNumber.id, {
-      voice_start: webhookUrl,
-    })
-
-    if (!configResult.success) {
-      console.error('Failed to configure phone number:', configResult.error)
-    }
-
-    // Step 7: Store phone number in database
-    const { data: phoneNumber, error: phoneError } = await supabase
-      .from('phone_numbers')
-      .insert({
-        customer_id: customerId,
-        business_id: business.id,
-        phone_number: elksNumber.number,
-        phone_number_display: formatPhoneDisplay(elksNumber.number),
-        country_code: 'SE',
-        provider: '46elks',
-        provider_number_id: elksNumber.id,
-        provider_config: { voice_start: webhookUrl },
-        status: 'active',
-        activated_at: new Date().toISOString(),
-        monthly_cost_cents: 300,
-        vapi_phone_number: vapiPhoneNumber,
-        vapi_phone_number_id: vapiPhoneNumberId,
-      })
-      .select()
-      .single()
-
-    if (phoneError) {
-      console.error('Failed to store phone number:', phoneError)
-      return NextResponse.json(
-        { error: 'Failed to store phone number' },
-        { status: 500 }
-      )
-    }
+    // COMMENTED OUT - DO NOT UNCOMMENT WITHOUT APPROVAL
+    // const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/46elks`
+    // const configResult = await configureNumber(elksNumber.id, { voice_start: webhookUrl })
+    // const { data: phoneNumber } = await supabase.from('phone_numbers').insert({...})
 
     // Step 8: Update business
     await supabase
