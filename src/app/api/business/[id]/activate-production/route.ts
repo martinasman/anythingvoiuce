@@ -257,6 +257,40 @@ export async function POST(
       )
     }
 
+    // Step 7: Update Vapi phone number to use this business's assistant
+    // This ensures the shared dev number answers with the correct assistant
+    const vapiPrivateKey = process.env.VAPI_PRIVATE_KEY
+    let vapiAssistantUpdated = false
+
+    if (vapiPrivateKey && vapiPhoneNumberId && business.vapi_assistant_id) {
+      try {
+        console.log('[Vapi] Updating phone number assistant to:', business.vapi_assistant_id)
+
+        const vapiResponse = await fetch(`https://api.vapi.ai/phone-number/${vapiPhoneNumberId}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${vapiPrivateKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            assistantId: business.vapi_assistant_id
+          })
+        })
+
+        if (vapiResponse.ok) {
+          console.log('[Vapi] Successfully updated phone number assistant')
+          vapiAssistantUpdated = true
+        } else {
+          const errorText = await vapiResponse.text()
+          console.error('[Vapi] Failed to update assistant:', errorText)
+        }
+      } catch (error) {
+        console.error('[Vapi] Error updating phone number:', error)
+        // Don't fail the whole request - the database is updated correctly
+        // and webhook routing will still work as a fallback
+      }
+    }
+
     // Success!
     return NextResponse.json({
       success: true,
@@ -271,7 +305,12 @@ export async function POST(
         display: elksNumberDisplay,
         vapiNumber: vapiPhoneNumber,
       },
-      message: `Production activated! Calls to ${elksNumberDisplay} will be handled by the AI assistant.`,
+      assistant: {
+        id: business.vapi_assistant_id,
+        name: business.name,
+        updated: vapiAssistantUpdated,
+      },
+      message: `Production activated! Calls to ${elksNumberDisplay} will be handled by ${business.name}'s AI assistant.`,
       devMode: true,
       devModeNote: 'Using shared dev numbers. In production, each customer will get unique numbers.',
     })

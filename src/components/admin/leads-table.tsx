@@ -19,6 +19,7 @@ interface ActivateModalState {
   success: {
     phoneNumber: string
     phoneDisplay: string
+    assistantName?: string
   } | null
 }
 
@@ -137,6 +138,7 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
         success: {
           phoneNumber: data.phoneNumber.number,
           phoneDisplay: data.phoneNumber.display,
+          assistantName: data.assistant?.name,
         },
       }))
     } catch (err) {
@@ -190,6 +192,7 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
               const isExpanded = expandedId === lead.id
               const statusStyle = STATUS_STYLES[lead.status] || STATUS_STYLES.pending
               const canActivate = lead.vapi_assistant_id && !lead.is_production
+              const canSwitch = lead.vapi_assistant_id && lead.is_production
 
               return (
                 <Fragment key={lead.id}>
@@ -256,6 +259,17 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
                             className="px-2.5 py-1 text-xs font-medium bg-green-600 hover:bg-green-700 text-white rounded transition-colors"
                           >
                             Aktivera
+                          </button>
+                        )}
+                        {canSwitch && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              openActivateModal(lead)
+                            }}
+                            className="px-2.5 py-1 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
+                          >
+                            Byt till aktiv
                           </button>
                         )}
                         <svg
@@ -327,12 +341,17 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">Produktion aktiverad!</h3>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {modal.business?.is_production ? 'Assistent bytt!' : 'Produktion aktiverad!'}
+                </h3>
                 <p className="text-zinc-400 mb-4">
-                  {modal.business.name} är nu live med telefonnummer:
+                  {modal.success.assistantName || modal.business?.name} svarar nu på samtal till:
                 </p>
                 <div className="bg-zinc-800 rounded-lg p-4 mb-6">
                   <p className="text-2xl font-mono text-white">{modal.success.phoneDisplay}</p>
+                  {modal.success.assistantName && (
+                    <p className="text-sm text-zinc-400 mt-2">AI: {modal.success.assistantName}</p>
+                  )}
                 </div>
                 <button
                   onClick={closeModal}
@@ -345,10 +364,13 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
               // Form state
               <>
                 <h3 className="text-xl font-bold text-white mb-2">
-                  Aktivera produktion
+                  {modal.business.is_production ? 'Byt aktiv assistent' : 'Aktivera produktion'}
                 </h3>
                 <p className="text-zinc-400 text-sm mb-6">
-                  Aktivera {modal.business.name} som produktionskund med ett svenskt telefonnummer.
+                  {modal.business.is_production
+                    ? `Byt till ${modal.business.name} som aktiv AI-assistent på telefonnumret.`
+                    : `Aktivera ${modal.business.name} som produktionskund med ett svenskt telefonnummer.`
+                  }
                 </p>
 
                 {modal.error && (
@@ -433,10 +455,10 @@ export function LeadsTable({ leads, onRefresh }: LeadsTableProps) {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                         </svg>
-                        Aktiverar...
+                        {modal.business?.is_production ? 'Byter...' : 'Aktiverar...'}
                       </>
                     ) : (
-                      'Aktivera produktion'
+                      modal.business?.is_production ? 'Byt assistent' : 'Aktivera produktion'
                     )}
                   </button>
                 </div>
