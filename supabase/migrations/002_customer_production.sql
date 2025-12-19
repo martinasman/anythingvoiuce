@@ -1,6 +1,9 @@
 -- Customer Production Solution
 -- Adds customers, phone numbers, production calls, usage tracking, and voice options
 
+-- Enable UUID extension (in case not already enabled)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 -- ============================================
 -- NEW ENUMS
 -- ============================================
@@ -47,7 +50,7 @@ CREATE TYPE call_sentiment AS ENUM (
 
 -- Customers table - Business owners using our platform
 CREATE TABLE customers (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
 
@@ -78,7 +81,7 @@ CREATE TABLE customers (
 
 -- Phone numbers table - Allocated phone numbers for customers
 CREATE TABLE phone_numbers (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
 
@@ -106,7 +109,7 @@ CREATE TABLE phone_numbers (
 
 -- Customer calls table - Production calls (not demos)
 CREATE TABLE customer_calls (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ DEFAULT NOW(),
 
   -- Relations
@@ -145,7 +148,7 @@ CREATE TABLE customer_calls (
 
 -- Usage records table - Monthly aggregates for billing
 CREATE TABLE usage_records (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ DEFAULT NOW(),
 
   customer_id UUID REFERENCES customers(id) ON DELETE CASCADE,
@@ -169,7 +172,7 @@ CREATE TABLE usage_records (
 
 -- Voice options table - Curated list of available voices
 CREATE TABLE voice_options (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at TIMESTAMPTZ DEFAULT NOW(),
 
   -- Voice Details

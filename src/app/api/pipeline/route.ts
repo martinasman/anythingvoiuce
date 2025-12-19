@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
         event_type: 'data_extracted',
         metadata: {
           extraction_time_ms: Date.now() - startTime,
-          services_count: businessData.services.length,
+          services_count: businessData.services?.length ?? 0,
         },
       })
 

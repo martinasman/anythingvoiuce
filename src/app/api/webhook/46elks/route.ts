@@ -5,8 +5,16 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
  * 46elks Webhook Handler
  *
  * This endpoint handles incoming call events from 46elks.
- * When a call comes in to an allocated number, 46elks calls this webhook
- * and we respond with instructions to connect the call to Vapi.
+ * When a call comes in to an allocated Swedish number, 46elks calls this webhook
+ * and we respond with instructions to connect the call to the Vapi US number.
+ *
+ * Call flow:
+ * 1. Customer calls Swedish 46elks number
+ * 2. 46elks sends webhook to this endpoint
+ * 3. We look up the business and its Vapi configuration
+ * 4. We return JSON telling 46elks to connect to Vapi's US phone number
+ * 5. Vapi handles the call with the AI assistant
+ * 6. Vapi sends end-of-call webhook to /api/webhook/vapi
  */
 
 export async function POST(request: NextRequest) {
@@ -38,7 +46,9 @@ export async function POST(request: NextRequest) {
         id,
         customer_id,
         business_id,
-        provider_config
+        provider_config,
+        vapi_phone_number,
+        vapi_phone_number_id
       `)
       .eq('phone_number', to)
       .eq('status', 'active')
@@ -49,7 +59,8 @@ export async function POST(request: NextRequest) {
       // Return a message saying the number is not in service
       return new NextResponse(
         JSON.stringify({
-          play: 'https://api.twilio.com/cowbell.mp3', // Placeholder - should use a proper "not in service" message
+          say: 'Det nummer du har ringt är inte i tjänst.',
+          voice: 'Elvira',
           next: JSON.stringify({ hangup: 'reject' }),
         }),
         { headers: { 'Content-Type': 'application/json' } }
@@ -66,76 +77,71 @@ export async function POST(request: NextRequest) {
     if (businessError || !business?.vapi_assistant_id) {
       console.error('[46elks] Business or assistant not found:', phoneNumber.business_id)
       return new NextResponse(
-        JSON.stringify({ hangup: 'reject' }),
+        JSON.stringify({
+          say: 'Tyvärr kan vi inte koppla ditt samtal just nu. Försök igen senare.',
+          voice: 'Elvira',
+          next: JSON.stringify({ hangup: 'reject' }),
+        }),
         { headers: { 'Content-Type': 'application/json' } }
       )
     }
 
-    // Log the incoming call
-    await supabase.from('customer_calls').insert({
+    // Log the incoming call (initial record - will be updated by Vapi webhook)
+    const { data: callRecord } = await supabase.from('customer_calls').insert({
       customer_id: phoneNumber.customer_id,
       business_id: business.id,
       phone_number_id: phoneNumber.id,
       direction: 'inbound',
       caller_phone: from,
       started_at: new Date().toISOString(),
-    })
+      provider_call_id: callid, // 46elks call ID
+    }).select('id').single()
 
-    // Get Vapi's phone configuration
-    // Vapi assistants can be reached via their phone number or SIP
-    // For now, we'll use Vapi's web calling by redirecting through our app
-    // In production, you'd configure Vapi with a phone number and connect via SIP
+    console.log('[46elks] Created call record:', callRecord?.id)
 
-    // Option 1: Connect to Vapi phone number (if you have one configured)
-    const vapiPhoneNumber = process.env.VAPI_PHONE_NUMBER
+    // Determine where to connect the call
+    // Priority: 1) Phone number's specific Vapi number, 2) Global Vapi number, 3) Error
+
+    const vapiPhoneNumber = (phoneNumber as { vapi_phone_number?: string }).vapi_phone_number || process.env.VAPI_PHONE_NUMBER
+
     if (vapiPhoneNumber) {
+      console.log('[46elks] Connecting to Vapi phone:', vapiPhoneNumber)
+
+      // Connect to Vapi's US phone number
+      // 46elks will forward the call to this number, and Vapi will handle it
       return new NextResponse(
         JSON.stringify({
           connect: vapiPhoneNumber,
-          callerid: from, // Pass through caller ID
+          callerid: from, // Pass through original caller ID
+          timeout: 30, // 30 seconds to connect
+          next: JSON.stringify({
+            say: 'Tyvärr kunde vi inte koppla ditt samtal. Försök igen senare.',
+            voice: 'Elvira',
+          }),
         }),
         { headers: { 'Content-Type': 'application/json' } }
       )
     }
 
-    // Option 2: Use SIP connection to Vapi (requires Vapi SIP configuration)
-    const vapiSipUri = process.env.VAPI_SIP_URI
-    if (vapiSipUri) {
-      // Include the assistant ID in the SIP headers
-      return new NextResponse(
-        JSON.stringify({
-          connect: `${vapiSipUri}?assistant_id=${business.vapi_assistant_id}`,
-          callerid: from,
-        }),
-        { headers: { 'Content-Type': 'application/json' } }
-      )
-    }
-
-    // Option 3: Webhook-based integration
-    // Store the call info and let Vapi initiate an outbound call
-    // This is a fallback when direct phone/SIP isn't available
-    console.log('[46elks] No Vapi phone/SIP configured, using webhook mode')
-
-    // For now, play a message and we'll handle this through Vapi's web SDK
-    // In production, you'd set up proper phone/SIP integration
+    // Fallback: No Vapi phone number configured
+    console.error('[46elks] No Vapi phone number configured for:', to)
     return new NextResponse(
       JSON.stringify({
-        say: 'Tack för ditt samtal. Vi kopplar dig nu.',
+        say: 'Vår AI-receptionist är inte tillgänglig just nu. Försök igen senare.',
         voice: 'Elvira',
-        next: JSON.stringify({
-          // This would connect to a configured fallback number
-          // For now, we'll just say we're transferring
-          say: 'Ett ögonblick.',
-          voice: 'Elvira',
-        }),
+        next: JSON.stringify({ hangup: 'reject' }),
       }),
       { headers: { 'Content-Type': 'application/json' } }
     )
   } catch (error) {
     console.error('[46elks webhook] Error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+    return new NextResponse(
+      JSON.stringify({
+        say: 'Ett tekniskt fel uppstod. Försök igen senare.',
+        voice: 'Elvira',
+        next: JSON.stringify({ hangup: 'reject' }),
+      }),
+      { headers: { 'Content-Type': 'application/json' } }
     )
   }
 }

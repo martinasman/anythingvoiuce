@@ -155,6 +155,9 @@ export interface Customer {
   stripe_customer_id: string | null
   timezone: string
   language: string
+  // Telegram notifications
+  telegram_chat_id: string | null
+  telegram_notifications_enabled: boolean
 }
 
 export interface PhoneNumber {
@@ -172,6 +175,9 @@ export interface PhoneNumber {
   status: PhoneNumberStatus
   activated_at: string | null
   monthly_cost_cents: number
+  // Vapi phone number (US) for call forwarding
+  vapi_phone_number: string | null
+  vapi_phone_number_id: string | null
 }
 
 export interface CustomerCall {
@@ -181,6 +187,7 @@ export interface CustomerCall {
   business_id: string | null
   phone_number_id: string | null
   vapi_call_id: string | null
+  provider_call_id: string | null // 46elks call ID
   direction: CallDirection
   caller_phone: string | null
   caller_name: string | null
@@ -196,6 +203,7 @@ export interface CustomerCall {
   cost_cents: number
   whatsapp_notified_at: string | null
   email_notified_at: string | null
+  telegram_notified_at: string | null
 }
 
 export interface ActionItem {

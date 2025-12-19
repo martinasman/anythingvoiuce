@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { getCurrentCustomer } from '@/lib/supabase/auth'
 import { allocateNumber, configureNumber, formatPhoneDisplay } from '@/lib/46elks/client'
+import { getOrCreateVapiPhoneNumber, assignAssistantToPhoneNumber } from '@/lib/vapi/client'
 
 /**
  * POST /api/onboarding
@@ -92,7 +93,36 @@ export async function POST(request: NextRequest) {
       })
       .eq('id', business.id)
 
-    // Step 3: Allocate phone number from 46elks
+    // Step 3: Get or create Vapi phone number (US number for call forwarding)
+    let vapiPhoneNumber: string | null = null
+    let vapiPhoneNumberId: string | null = null
+
+    // Try to use environment variable first, or get/create from Vapi
+    if (process.env.VAPI_PHONE_NUMBER) {
+      vapiPhoneNumber = process.env.VAPI_PHONE_NUMBER
+      vapiPhoneNumberId = process.env.VAPI_PHONE_NUMBER_ID || null
+    } else {
+      const vapiResult = await getOrCreateVapiPhoneNumber()
+      if (vapiResult.success) {
+        vapiPhoneNumber = vapiResult.phoneNumber || null
+        vapiPhoneNumberId = vapiResult.phoneNumberId || null
+      } else {
+        console.warn('Could not get Vapi phone number:', vapiResult.error)
+      }
+    }
+
+    // Step 4: Assign assistant to Vapi phone number if available
+    if (vapiPhoneNumberId && business.vapi_assistant_id) {
+      const assignResult = await assignAssistantToPhoneNumber(
+        vapiPhoneNumberId,
+        business.vapi_assistant_id
+      )
+      if (!assignResult.success) {
+        console.warn('Could not assign assistant to Vapi phone:', assignResult.error)
+      }
+    }
+
+    // Step 5: Allocate Swedish phone number from 46elks
     const allocateResult = await allocateNumber({ country: 'se', voice: true })
 
     if (!allocateResult.success) {
@@ -105,7 +135,7 @@ export async function POST(request: NextRequest) {
 
     const elksNumber = allocateResult.number
 
-    // Step 4: Configure phone number to forward to our webhook
+    // Step 6: Configure 46elks number to forward to our webhook
     const webhookUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/46elks`
     const configResult = await configureNumber(elksNumber.id, {
       voice_start: webhookUrl,
@@ -116,7 +146,7 @@ export async function POST(request: NextRequest) {
       // Don't fail completely - the number is allocated, just not configured
     }
 
-    // Step 5: Store phone number in database
+    // Step 7: Store phone number in database with Vapi number reference
     const { data: phoneNumber, error: phoneError } = await supabase
       .from('phone_numbers')
       .insert({
@@ -131,6 +161,8 @@ export async function POST(request: NextRequest) {
         status: 'active',
         activated_at: new Date().toISOString(),
         monthly_cost_cents: 300, // ~3 EUR
+        vapi_phone_number: vapiPhoneNumber,
+        vapi_phone_number_id: vapiPhoneNumberId,
       })
       .select()
       .single()
@@ -143,7 +175,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Step 6: Update business as production-enabled
+    // Step 8: Update business as production-enabled
     await supabase
       .from('businesses')
       .update({
@@ -153,7 +185,7 @@ export async function POST(request: NextRequest) {
       })
       .eq('id', business.id)
 
-    // Step 7: Update customer with WhatsApp if provided
+    // Step 9: Update customer with WhatsApp if provided
     if (whatsappPhone) {
       await supabase
         .from('customers')
@@ -164,7 +196,7 @@ export async function POST(request: NextRequest) {
         .eq('id', customer.id)
     }
 
-    // Step 8: Log onboarding event
+    // Step 10: Log onboarding event
     await supabase.from('lead_events').insert({
       business_id: business.id,
       event_type: 'production_enabled',

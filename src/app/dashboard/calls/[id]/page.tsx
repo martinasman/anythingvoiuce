@@ -53,7 +53,8 @@ export default async function CallDetailPage({ params }: PageProps) {
     notFound()
   }
 
-  const sentiment = SENTIMENT_STYLES[call.sentiment] || SENTIMENT_STYLES.neutral
+  const sentimentKey = call.sentiment as keyof typeof SENTIMENT_STYLES
+  const sentiment = SENTIMENT_STYLES[sentimentKey] || SENTIMENT_STYLES.neutral
   const transcript = (call.transcript || []) as TranscriptMessage[]
 
   return (

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createSupabaseServerClient } from '@/lib/supabase/server'
-import { sendCallNotification, formatDuration, isWhatsAppConfigured } from '@/lib/whatsapp/client'
+import { sendCallNotification as sendWhatsAppCallNotification, formatDuration, isWhatsAppConfigured } from '@/lib/whatsapp/client'
+import { sendCallNotification as sendTelegramCallNotification, formatDurationForTelegram } from '@/lib/telegram/client'
 
 interface VapiWebhookMessage {
   type: string
@@ -115,9 +116,15 @@ export async function POST(request: NextRequest) {
               console.error('Error storing production call:', callError)
             }
 
-            // Send WhatsApp notification if enabled
-            if (callRecord && isWhatsAppConfigured()) {
-              await sendWhatsAppNotification(supabase, business, callRecord, summary, durationSeconds)
+            // Send notifications if enabled
+            if (callRecord) {
+              // WhatsApp notification
+              if (isWhatsAppConfigured()) {
+                await sendWhatsAppNotification(supabase, business, callRecord, summary, durationSeconds, structuredData)
+              }
+
+              // Telegram notification
+              await sendTelegramNotification(supabase, business, callRecord, summary, durationSeconds, structuredData)
             }
 
             // Update usage records
@@ -188,6 +195,13 @@ export async function POST(request: NextRequest) {
   }
 }
 
+interface StructuredData {
+  topic?: string
+  sentiment?: string
+  actionItems?: Array<{ description: string; priority?: string }>
+  followUpRequired?: boolean
+}
+
 /**
  * Send WhatsApp notification to customer
  */
@@ -196,7 +210,8 @@ async function sendWhatsAppNotification(
   business: { id: string; name: string | null; customer_id: string | null },
   callRecord: { id: string; caller_phone: string | null; caller_name: string | null },
   summary: string | null,
-  durationSeconds: number
+  durationSeconds: number,
+  structuredData?: StructuredData
 ) {
   if (!business.customer_id) return
 
@@ -212,7 +227,7 @@ async function sendWhatsAppNotification(
   }
 
   try {
-    const result = await sendCallNotification(customer.whatsapp_phone, {
+    const result = await sendWhatsAppCallNotification(customer.whatsapp_phone, {
       businessName: business.name || 'Ditt företag',
       callerPhone: callRecord.caller_phone || 'Okänt nummer',
       callerName: callRecord.caller_name || undefined,
@@ -231,6 +246,60 @@ async function sendWhatsAppNotification(
     }
   } catch (error) {
     console.error('WhatsApp notification error:', error)
+  }
+}
+
+/**
+ * Send Telegram notification to customer
+ */
+async function sendTelegramNotification(
+  supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>,
+  business: { id: string; name: string | null; customer_id: string | null },
+  callRecord: { id: string; caller_phone: string | null; caller_name: string | null },
+  summary: string | null,
+  durationSeconds: number,
+  structuredData?: StructuredData
+) {
+  if (!business.customer_id) return
+
+  // Check if Telegram bot is configured
+  if (!process.env.TELEGRAM_BOT_TOKEN) {
+    return
+  }
+
+  // Get customer's Telegram settings
+  const { data: customer } = await supabase
+    .from('customers')
+    .select('telegram_chat_id, telegram_notifications_enabled')
+    .eq('id', business.customer_id)
+    .single()
+
+  if (!customer?.telegram_notifications_enabled || !customer.telegram_chat_id) {
+    return
+  }
+
+  try {
+    const result = await sendTelegramCallNotification(customer.telegram_chat_id, {
+      businessName: business.name || 'Ditt företag',
+      callerPhone: callRecord.caller_phone || 'Okänt nummer',
+      duration: formatDurationForTelegram(durationSeconds),
+      summary: summary || 'Ingen sammanfattning tillgänglig',
+      topic: structuredData?.topic,
+      sentiment: structuredData?.sentiment as 'positive' | 'neutral' | 'negative' | undefined,
+      timestamp: new Date(),
+    })
+
+    if (result.success) {
+      // Mark as notified
+      await supabase
+        .from('customer_calls')
+        .update({ telegram_notified_at: new Date().toISOString() })
+        .eq('id', callRecord.id)
+    } else {
+      console.error('Telegram notification failed:', result.error)
+    }
+  } catch (error) {
+    console.error('Telegram notification error:', error)
   }
 }
 

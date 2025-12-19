@@ -49,8 +49,9 @@ const INDUSTRY_SUGGESTED_QUESTIONS: Record<Industry, string[]> = {
 }
 
 export function generateSystemPrompt(business: ExtractedBusinessData): string {
-  const servicesText = business.services.length > 0
-    ? `\n\n## Tjänster vi erbjuder:\n${business.services.map(s =>
+  const services = business.services ?? []
+  const servicesText = services.length > 0
+    ? `\n\n## Tjänster vi erbjuder:\n${services.map(s =>
         `- ${s.name}${s.price ? ` (${s.price})` : ''}${s.description ? `: ${s.description}` : ''}`
       ).join('\n')}`
     : ''
