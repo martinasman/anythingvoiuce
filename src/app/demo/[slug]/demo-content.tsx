@@ -65,21 +65,19 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
       {/* Header */}
       <header className="border-b border-slate-200 px-6 py-4 bg-white">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <div className="flex-1">
-            <span className="text-xs font-semibold text-[#5A9BC7] uppercase tracking-wider">
-              AI Receptionist Demo
-            </span>
-            <h1 className="text-2xl font-bold mt-1 text-slate-900">{business.name}</h1>
-          </div>
-          <Link
-            href="/"
-            className="ml-6 flex items-center gap-2 px-4 py-2 bg-[#5A9BC7] hover:bg-[#4683AE] text-white rounded-sm transition-colors font-medium text-sm whitespace-nowrap"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Main Website
+          {/* Logo - links to landing page */}
+          <Link href="/" className="flex items-center gap-1 hover:opacity-80 transition-opacity">
+            <span className="font-display text-xl text-[#275379]">Anything</span>
+            <span className="text-xl font-semibold text-slate-900">Voice</span>
           </Link>
+
+          {/* Business info */}
+          <div className="text-right">
+            <span className="text-xs font-semibold text-[#5A9BC7] uppercase tracking-wider">
+              Demo
+            </span>
+            <h1 className="text-lg font-bold text-slate-900">{business.name}</h1>
+          </div>
         </div>
       </header>
 
