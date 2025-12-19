@@ -1,8 +1,10 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Fragment, useState } from 'react'
 import type { Business } from '@/types/database'
+import { AddEmailModal } from './add-email-modal'
 
 interface LeadsTableProps {
   leads: Business[]
@@ -52,8 +54,11 @@ function formatDate(dateString: string | null): string {
 }
 
 export function LeadsTable({ leads, onSendEmail }: LeadsTableProps) {
+  const router = useRouter()
   const [expandedId, setExpandedId] = useState<string | null>(null)
   const [sendingEmail, setSendingEmail] = useState<string | null>(null)
+  const [addEmailBusinessId, setAddEmailBusinessId] = useState<string | null>(null)
+  const [addEmailBusinessName, setAddEmailBusinessName] = useState<string>('')
 
   if (leads.length === 0) {
     return (
@@ -143,6 +148,17 @@ export function LeadsTable({ leads, onSendEmail }: LeadsTableProps) {
                           </span>
                         )}
                       </div>
+                    ) : !lead.contact_email && !lead.email ? (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setAddEmailBusinessId(lead.id)
+                          setAddEmailBusinessName(lead.name || 'Okänt')
+                        }}
+                        className="text-xs px-2 py-1 bg-yellow-600 hover:bg-yellow-700 text-white rounded transition-colors flex items-center gap-1"
+                      >
+                        ⚠️ Lägg till
+                      </button>
                     ) : lead.status === 'agent_created' && onSendEmail ? (
                       <button
                         onClick={async (e) => {
@@ -233,6 +249,17 @@ export function LeadsTable({ leads, onSendEmail }: LeadsTableProps) {
           })}
         </tbody>
       </table>
+      {addEmailBusinessId && (
+        <AddEmailModal
+          businessId={addEmailBusinessId}
+          businessName={addEmailBusinessName}
+          onClose={() => setAddEmailBusinessId(null)}
+          onSuccess={() => {
+            router.refresh()
+            setAddEmailBusinessId(null)
+          }}
+        />
+      )}
     </div>
   )
 }
