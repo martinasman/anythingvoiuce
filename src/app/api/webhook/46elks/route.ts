@@ -107,12 +107,12 @@ export async function POST(request: NextRequest) {
 
       // Connect to Vapi's US phone number
       // 46elks will forward the call to this number
-      // callerid must be our own 46elks number for outbound leg
+      // Simple connect action per 46elks docs: https://46elks.com/docs/voice-connect
+      const response = { connect: vapiPhoneNumber }
+      console.log('[46elks] Returning response:', JSON.stringify(response))
+
       return new NextResponse(
-        JSON.stringify({
-          connect: vapiPhoneNumber,
-          callerid: "+46850924581",
-        }),
+        JSON.stringify(response),
         { headers: { 'Content-Type': 'application/json' } }
       )
     }
