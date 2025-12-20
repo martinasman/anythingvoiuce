@@ -36,7 +36,7 @@ export function DemoCTA() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button
                     size="lg"
-                    className="bg-white text-[#275379] hover:bg-slate-100"
+                    className="bg-white text-[#275379] hover:bg-[#ECECEC]"
                   >
                     Try Live Demo
                   </Button>

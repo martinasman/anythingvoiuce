@@ -46,14 +46,14 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 bg-slate-50">
+    <section id="how-it-works" className="py-24 bg-[#F4F3F3]">
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-4">
             Get started in minutes
           </h2>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-[#4A4A4A]">
             Four simple steps to transform how your business handles phone calls.
           </p>
         </div>
@@ -67,7 +67,7 @@ export function HowItWorks() {
             {steps.map((step, index) => (
               <div key={step.number} className="relative">
                 {/* Card */}
-                <div className="bg-white border border-slate-200 rounded-sm p-8 text-center relative z-10 h-full">
+                <div className="bg-white border border-[#ECECEC] rounded-sm p-8 text-center relative z-10 h-full">
                   {/* Number Badge */}
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#5A9BC7] text-white text-sm font-bold px-3 py-1 rounded-sm">
                     {step.number}
@@ -79,10 +79,10 @@ export function HowItWorks() {
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                  <h3 className="text-xl font-semibold text-[#1D1C1B] mb-3">
                     {step.title}
                   </h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">
+                  <p className="text-[#4A4A4A] text-sm leading-relaxed">
                     {step.description}
                   </p>
                 </div>

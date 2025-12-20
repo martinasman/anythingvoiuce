@@ -63,10 +63,10 @@ export function PricingSection() {
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-4">
             Simple, transparent pricing
           </h2>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-[#4A4A4A]">
             No hidden fees. No surprises. Just honest pricing that scales with your business.
           </p>
         </div>
@@ -80,7 +80,7 @@ export function PricingSection() {
                 'relative rounded-sm p-8 transition-all',
                 plan.highlighted
                   ? 'bg-[#275379] text-white ring-2 ring-[#5A9BC7] scale-105'
-                  : 'bg-white border border-slate-200 hover:border-[#BFD7EA] hover:shadow-lg'
+                  : 'bg-white border border-[#ECECEC] hover:border-[#BFD7EA] hover:shadow-lg'
               )}
             >
               {/* Badge */}
@@ -94,7 +94,7 @@ export function PricingSection() {
               <h3
                 className={cn(
                   'text-xl font-semibold mb-2',
-                  plan.highlighted ? 'text-white' : 'text-slate-900'
+                  plan.highlighted ? 'text-white' : 'text-[#1D1C1B]'
                 )}
               >
                 {plan.name}
@@ -105,7 +105,7 @@ export function PricingSection() {
                 <span
                   className={cn(
                     'text-4xl font-bold',
-                    plan.highlighted ? 'text-white' : 'text-slate-900'
+                    plan.highlighted ? 'text-white' : 'text-[#1D1C1B]'
                   )}
                 >
                   {plan.price}
@@ -113,7 +113,7 @@ export function PricingSection() {
                 <span
                   className={cn(
                     'text-sm',
-                    plan.highlighted ? 'text-white/70' : 'text-slate-500'
+                    plan.highlighted ? 'text-white/70' : 'text-[#6B6B6B]'
                   )}
                 >
                   {plan.period}
@@ -124,7 +124,7 @@ export function PricingSection() {
               <p
                 className={cn(
                   'text-sm mb-6',
-                  plan.highlighted ? 'text-white/80' : 'text-slate-600'
+                  plan.highlighted ? 'text-white/80' : 'text-[#4A4A4A]'
                 )}
               >
                 {plan.description}
@@ -151,7 +151,7 @@ export function PricingSection() {
                     <span
                       className={cn(
                         'text-sm',
-                        plan.highlighted ? 'text-white/90' : 'text-slate-600'
+                        plan.highlighted ? 'text-white/90' : 'text-[#4A4A4A]'
                       )}
                     >
                       {feature}
@@ -165,7 +165,7 @@ export function PricingSection() {
                 className={cn(
                   'w-full',
                   plan.highlighted
-                    ? 'bg-white text-[#275379] hover:bg-slate-100'
+                    ? 'bg-white text-[#275379] hover:bg-[#ECECEC]'
                     : ''
                 )}
                 variant={plan.highlighted ? 'secondary' : 'primary'}
@@ -178,7 +178,7 @@ export function PricingSection() {
 
         {/* Additional Info */}
         <div className="text-center mt-12">
-          <p className="text-slate-500 text-sm">
+          <p className="text-[#6B6B6B] text-sm">
             All plans include a 14-day free trial. No credit card required.
           </p>
         </div>

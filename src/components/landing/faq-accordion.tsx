@@ -59,20 +59,20 @@ const faqs = [
 
 export function FAQAccordion() {
   return (
-    <section id="faq" className="py-24 bg-slate-50">
+    <section id="faq" className="py-24 bg-[#F4F3F3]">
       <Container size="narrow">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-4">
             Frequently asked questions
           </h2>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-[#4A4A4A]">
             Everything you need to know about AnythingVoice.
           </p>
         </div>
 
         {/* FAQ List */}
-        <div className="bg-white rounded-sm border border-slate-200">
+        <div className="bg-white rounded-sm border border-[#ECECEC]">
           <Accordion>
             {faqs.map((faq) => (
               <AccordionItem key={faq.id} id={faq.id} className="px-6">
@@ -85,7 +85,7 @@ export function FAQAccordion() {
 
         {/* Contact Link */}
         <div className="text-center mt-8">
-          <p className="text-slate-600">
+          <p className="text-[#4A4A4A]">
             Still have questions?{' '}
             <a href="/contact" className="text-[#5A9BC7] hover:text-[#4683AE] font-medium">
               Get in touch

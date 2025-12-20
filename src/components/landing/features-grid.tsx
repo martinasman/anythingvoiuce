@@ -70,10 +70,10 @@ export function FeaturesGrid() {
       <Container>
         {/* Header */}
         <div className="max-w-2xl mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-4">
             Everything you need to handle calls professionally
           </h2>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-[#4A4A4A]">
             Our AI receptionist combines cutting-edge technology with a personal touch to deliver exceptional customer experiences.
           </p>
         </div>
@@ -84,7 +84,7 @@ export function FeaturesGrid() {
             <div
               key={feature.title}
               className={cn(
-                'group relative bg-slate-50 border border-slate-200 p-8 transition-all hover:border-[#BFD7EA] hover:shadow-lg',
+                'group relative bg-[#F4F3F3] border border-[#ECECEC] p-8 transition-all hover:border-[#BFD7EA] hover:shadow-lg',
                 // Sharp corners
                 'rounded-sm',
                 // Size variations
@@ -100,10 +100,10 @@ export function FeaturesGrid() {
               </div>
 
               {/* Content */}
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+              <h3 className="text-xl font-semibold text-[#1D1C1B] mb-2">
                 {feature.title}
               </h3>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-[#4A4A4A] leading-relaxed">
                 {feature.description}
               </p>
 

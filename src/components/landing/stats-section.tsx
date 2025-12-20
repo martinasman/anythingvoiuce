@@ -29,10 +29,10 @@ export function StatsSection() {
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-4">
             Built for reliability
           </h2>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-[#4A4A4A]">
             Enterprise-grade infrastructure ensuring your customers always reach you.
           </p>
         </div>
@@ -44,7 +44,7 @@ export function StatsSection() {
               {/* Divider (not on first item) */}
               <div className="relative">
                 {index > 0 && (
-                  <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-px h-16 bg-slate-200" />
+                  <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-px h-16 bg-[#ECECEC]" />
                 )}
 
                 {/* Value */}
@@ -53,12 +53,12 @@ export function StatsSection() {
                 </div>
 
                 {/* Label */}
-                <div className="text-lg font-semibold text-slate-900 mb-1">
+                <div className="text-lg font-semibold text-[#1D1C1B] mb-1">
                   {stat.label}
                 </div>
 
                 {/* Description */}
-                <div className="text-sm text-slate-500">
+                <div className="text-sm text-[#6B6B6B]">
                   {stat.description}
                 </div>
               </div>

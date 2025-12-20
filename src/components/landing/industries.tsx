@@ -49,7 +49,7 @@ const industries = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
       </svg>
     ),
-    color: 'bg-slate-100 text-slate-600 border-slate-300',
+    color: 'bg-[#ECECEC] text-[#4A4A4A] border-[#D4D4D4]',
   },
   {
     name: 'Real Estate',
@@ -69,10 +69,10 @@ export function Industries() {
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-4">
             Built for your industry
           </h2>
-          <p className="text-lg text-slate-600">
+          <p className="text-lg text-[#4A4A4A]">
             Pre-configured AI assistants tailored to the unique needs of different business types.
           </p>
         </div>
@@ -82,7 +82,7 @@ export function Industries() {
           {industries.map((industry) => (
             <div
               key={industry.name}
-              className="group bg-white border border-slate-200 rounded-sm p-6 transition-all hover:border-[#BFD7EA] hover:shadow-lg"
+              className="group bg-white border border-[#ECECEC] rounded-sm p-6 transition-all hover:border-[#BFD7EA] hover:shadow-lg"
             >
               {/* Icon */}
               <div className={`w-14 h-14 rounded-sm flex items-center justify-center mb-4 border ${industry.color}`}>
@@ -90,10 +90,10 @@ export function Industries() {
               </div>
 
               {/* Content */}
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">
+              <h3 className="text-lg font-semibold text-[#1D1C1B] mb-2">
                 {industry.name}
               </h3>
-              <p className="text-slate-600 text-sm leading-relaxed">
+              <p className="text-[#4A4A4A] text-sm leading-relaxed">
                 {industry.description}
               </p>
 

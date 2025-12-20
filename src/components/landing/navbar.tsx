@@ -29,7 +29,7 @@ export function Navbar() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         scrolled
-          ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm'
+          ? 'bg-white/95 backdrop-blur-sm border-b border-[#ECECEC] shadow-sm'
           : 'bg-transparent'
       )}
     >
@@ -38,7 +38,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-1">
             <span className="font-display text-2xl text-[#275379]">Anything</span>
-            <span className="text-2xl font-semibold text-slate-900">Voice</span>
+            <span className="text-2xl font-semibold text-[#1D1C1B]">Voice</span>
           </Link>
 
           {/* Nav Links - Desktop */}
@@ -50,8 +50,8 @@ export function Navbar() {
                 className={cn(
                   'text-sm font-medium transition-colors',
                   scrolled
-                    ? 'text-slate-600 hover:text-slate-900'
-                    : 'text-slate-700 hover:text-slate-900'
+                    ? 'text-[#4A4A4A] hover:text-[#1D1C1B]'
+                    : 'text-[#3A3A3A] hover:text-[#1D1C1B]'
                 )}
               >
                 {item.label}
@@ -66,8 +66,8 @@ export function Navbar() {
               className={cn(
                 'hidden sm:inline-flex text-sm font-medium transition-colors',
                 scrolled
-                  ? 'text-slate-600 hover:text-slate-900'
-                  : 'text-slate-700 hover:text-slate-900'
+                  ? 'text-[#4A4A4A] hover:text-[#1D1C1B]'
+                  : 'text-[#3A3A3A] hover:text-[#1D1C1B]'
               )}
             >
               Dashboard
@@ -77,8 +77,8 @@ export function Navbar() {
               className={cn(
                 'hidden sm:inline-flex text-sm font-medium transition-colors',
                 scrolled
-                  ? 'text-slate-600 hover:text-slate-900'
-                  : 'text-slate-700 hover:text-slate-900'
+                  ? 'text-[#4A4A4A] hover:text-[#1D1C1B]'
+                  : 'text-[#3A3A3A] hover:text-[#1D1C1B]'
               )}
             >
               Logga in
