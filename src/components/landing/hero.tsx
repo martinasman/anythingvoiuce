@@ -1,27 +1,73 @@
 import Link from 'next/link'
+import { Container } from '@/components/ui/container'
 
 export function Hero() {
   return (
-    <section className="min-h-screen bg-[#F4F3F3] flex items-center">
-      <div className="w-full max-w-4xl mx-auto px-8 md:px-16 py-32">
-        {/* Product Name */}
-        <h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-[#1D1C1B] mb-6">
-          Anything<span className="text-[#4A4A4A]">Voice</span>
-        </h1>
+    <section id="platform" className="bg-[#F4F3F3] pt-32 pb-20 scroll-mt-24">
+      <Container>
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-xs uppercase tracking-[0.35em] text-[#6B6B6B]">
+            Your next breakthrough
+          </p>
+          <h1 className="mt-4 text-4xl md:text-6xl font-display tracking-tight text-[#1D1C1B]">
+            Your next breakthrough,
+            <br />
+            powered by AI
+          </h1>
+          <p className="mt-6 text-lg text-[#4A4A4A] leading-relaxed">
+            AnythingVoice helps teams answer every call, capture intent, and move work
+            forward with calm, dependable voice automation.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="#cta"
+              className="inline-flex items-center justify-center rounded-full bg-[#1D1C1B] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#3A3A3A]"
+            >
+              Start a pilot
+            </Link>
+            <Link
+              href="#solutions"
+              className="text-sm font-medium text-[#1D1C1B] underline underline-offset-4"
+            >
+              Explore the platform
+            </Link>
+          </div>
+          <div className="mt-10 flex items-center justify-center gap-3">
+            <span
+              className="h-px w-16"
+              style={{ backgroundColor: 'var(--accent-blue)' }}
+            />
+            <span
+              className="h-px w-10"
+              style={{ backgroundColor: 'var(--accent-warm)' }}
+            />
+          </div>
+        </div>
 
-        {/* Tagline */}
-        <p className="text-xl md:text-2xl text-[#4A4A4A] mb-12 max-w-2xl leading-relaxed">
-          AI voice agents that answer calls, book appointments, and handle customer inquiries — so you don't have to.
-        </p>
-
-        {/* CTA */}
-        <Link
-          href="#demo"
-          className="inline-flex px-8 py-4 bg-[#1D1C1B] text-white font-medium text-sm uppercase tracking-wider hover:bg-[#3A3A3A] transition-colors rounded-sm"
-        >
-          Try the Demo
-        </Link>
-      </div>
+        <div className="mt-16 grid gap-6 md:grid-cols-[1.4fr_1fr]">
+          <div className="relative min-h-[260px] rounded-2xl bg-[linear-gradient(135deg,#E1EFF9,#BFD7EA)] p-6 md:min-h-[320px]">
+            <div className="absolute left-6 top-6 inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#1D1C1B]">
+              Real-time intake
+            </div>
+            <div className="absolute right-6 top-16 inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#1D1C1B]">
+              Smart routing
+            </div>
+            <div className="absolute bottom-6 left-6 right-6 rounded-xl bg-[#1D1C1B]/85 p-4 text-white">
+              <div className="mb-3 text-xs uppercase tracking-[0.3em] text-white/60">
+                Live transcript
+              </div>
+              <div className="space-y-2">
+                <div className="h-2 w-3/4 rounded-full bg-white/40" />
+                <div className="h-2 w-2/3 rounded-full bg-white/30" />
+                <div className="h-2 w-1/2 rounded-full bg-white/20" />
+              </div>
+            </div>
+          </div>
+          <div className="min-h-[260px] rounded-2xl bg-[#ECECEC] md:min-h-[320px]">
+            <div className="h-full w-full rounded-2xl border border-white/60" />
+          </div>
+        </div>
+      </Container>
     </section>
   )
 }

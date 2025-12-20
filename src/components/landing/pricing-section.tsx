@@ -1,128 +1,45 @@
+import Link from 'next/link'
 import { Container } from '@/components/ui/container'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils/cn'
-
-const plans = [
-  {
-    name: 'Starter',
-    price: '$29',
-    period: '/month',
-    features: [
-      '100 minutes',
-      '1 phone number',
-      'Email support',
-    ],
-    cta: 'Get Started',
-    highlighted: false,
-  },
-  {
-    name: 'Growth',
-    price: '$79',
-    period: '/month',
-    features: [
-      '500 minutes',
-      '3 phone numbers',
-      '24/7 coverage',
-      'Calendar sync',
-    ],
-    cta: 'Get Started',
-    highlighted: true,
-  },
-  {
-    name: 'Enterprise',
-    price: 'Custom',
-    period: '',
-    features: [
-      'Unlimited minutes',
-      'Unlimited numbers',
-      'Custom training',
-      'SLA guarantee',
-    ],
-    cta: 'Contact Sales',
-    highlighted: false,
-  },
-]
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="py-24 bg-white">
+    <section id="developers" className="relative overflow-hidden py-20 text-white scroll-mt-24">
+      <div className="absolute inset-0 bg-[linear-gradient(135deg,#1B2740,#2B4372_45%,#5A9BC7)]" />
+      <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_70%_30%,#BFD7EA33,transparent_55%)]" />
       <Container>
-        {/* Header */}
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-16 text-center">
-          Pricing
-        </h2>
-
-        {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={cn(
-                'rounded-sm p-8',
-                plan.highlighted
-                  ? 'bg-[#1D1C1B] text-white'
-                  : 'bg-[#F4F3F3]'
-              )}
+        <div className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-white/70">
+              Developer resources
+            </p>
+            <h2 className="mt-4 text-3xl md:text-4xl font-display tracking-tight">
+              Build with confidence
+            </h2>
+            <p className="mt-4 text-base text-white/80">
+              Documentation, APIs, and examples designed for teams who want fast
+              integrations without noisy tooling.
+            </p>
+            <Link
+              href="#"
+              className="mt-6 inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-medium text-[#1D1C1B]"
             >
-              {/* Plan Name */}
-              <h3
-                className={cn(
-                  'text-lg font-medium mb-4',
-                  plan.highlighted ? 'text-white' : 'text-[#1D1C1B]'
-                )}
-              >
-                {plan.name}
-              </h3>
-
-              {/* Price */}
-              <div className="mb-6">
-                <span
-                  className={cn(
-                    'text-3xl font-semibold',
-                    plan.highlighted ? 'text-white' : 'text-[#1D1C1B]'
-                  )}
-                >
-                  {plan.price}
-                </span>
-                <span
-                  className={cn(
-                    'text-sm',
-                    plan.highlighted ? 'text-white/60' : 'text-[#6B6B6B]'
-                  )}
-                >
-                  {plan.period}
-                </span>
+              Explore docs
+            </Link>
+          </div>
+          <div className="rounded-2xl border border-white/20 bg-white/10 p-5 shadow-xl shadow-black/30">
+            <div className="rounded-xl border border-white/20 bg-[#0F1E2A]/40 p-5">
+              <div className="mb-4 flex items-center justify-between text-xs text-white/70">
+                <span>API Reference</span>
+                <span>v2.4</span>
               </div>
-
-              {/* Features */}
-              <ul className="space-y-2 mb-8">
-                {plan.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className={cn(
-                      'text-sm',
-                      plan.highlighted ? 'text-white/80' : 'text-[#4A4A4A]'
-                    )}
-                  >
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              {/* CTA */}
-              <Button
-                className={cn(
-                  'w-full',
-                  plan.highlighted
-                    ? 'bg-white text-[#1D1C1B] hover:bg-[#ECECEC]'
-                    : ''
-                )}
-                variant={plan.highlighted ? 'secondary' : 'primary'}
-              >
-                {plan.cta}
-              </Button>
+              <div className="space-y-3">
+                <div className="h-3 w-3/4 rounded-full bg-white/25" />
+                <div className="h-3 w-2/3 rounded-full bg-white/20" />
+                <div className="h-3 w-4/5 rounded-full bg-white/20" />
+                <div className="h-3 w-1/2 rounded-full bg-white/15" />
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </Container>
     </section>

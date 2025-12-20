@@ -23,6 +23,14 @@
   --text-primary: #1D1C1B;
   --text-secondary: #4A4A4A;
   --text-muted: #6B6B6B;
+
+  /* Accent + layout tokens */
+  --accent-blue: var(--primary);
+  --accent-warm: #C8896B;
+  --page-bg: var(--background);
+  --surface: #FFFFFF;
+  --surface-muted: #ECECEC;
+  --footer-bg: #1D1C1B;
 }
 
 @theme inline {
@@ -36,7 +44,7 @@
 }
 
 body {
-  background: var(--background);
+  background: var(--page-bg);
   color: var(--foreground);
   font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -87,4 +95,15 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   letter-spacing: -0.01em;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

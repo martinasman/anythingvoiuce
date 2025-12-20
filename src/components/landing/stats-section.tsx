@@ -1,69 +1,83 @@
 import { Container } from '@/components/ui/container'
 
-const stats = [
-  {
-    value: '< 3s',
-    label: 'Response Time',
-    description: 'Average time to answer incoming calls',
-  },
-  {
-    value: '24/7',
-    label: 'Availability',
-    description: 'Always on, never takes a break',
-  },
-  {
-    value: '2+',
-    label: 'Languages',
-    description: 'Swedish and English supported',
-  },
-  {
-    value: '99.9%',
-    label: 'Uptime',
-    description: 'Reliable service guaranteed',
-  },
+const industries = [
+  'Financial services',
+  'Public sector',
+  'Energy',
+  'Healthcare',
+  'Consumer',
+  'Manufacturing',
 ]
 
 export function StatsSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-[#ECECEC]/30 to-white">
+    <section id="industries" className="bg-white py-24 scroll-mt-24">
       <Container>
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-4">
-            Built for reliability
-          </h2>
-          <p className="text-lg text-[#4A4A4A]">
-            Enterprise-grade infrastructure ensuring your customers always reach you.
-          </p>
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-[0.3em] text-[#6B6B6B]">
+              Powering progress
+            </p>
+            <h2 className="mt-3 text-3xl md:text-4xl font-display tracking-tight text-[#1D1C1B]">
+              Powering progress across industries
+            </h2>
+          </div>
+          <div className="hidden items-center gap-2 md:flex">
+            <button
+              type="button"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#D4D4D4] text-[#4A4A4A] transition-colors hover:border-[#1D1C1B] hover:text-[#1D1C1B]"
+              aria-label="Previous"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
+                <path
+                  d="M15 6l-6 6 6 6"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#D4D4D4] text-[#4A4A4A] transition-colors hover:border-[#1D1C1B] hover:text-[#1D1C1B]"
+              aria-label="Next"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none">
+                <path
+                  d="M9 6l6 6-6 6"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
-            <div key={stat.label} className="text-center">
-              {/* Divider (not on first item) */}
-              <div className="relative">
-                {index > 0 && (
-                  <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-px h-16 bg-[#ECECEC]" />
-                )}
-
-                {/* Value */}
-                <div className="text-4xl md:text-5xl font-bold text-[#1D1C1B] mb-2">
-                  {stat.value}
-                </div>
-
-                {/* Label */}
-                <div className="text-lg font-semibold text-[#1D1C1B] mb-1">
-                  {stat.label}
-                </div>
-
-                {/* Description */}
-                <div className="text-sm text-[#6B6B6B]">
-                  {stat.description}
-                </div>
-              </div>
+        <div className="mt-10 -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 no-scrollbar">
+          {industries.map((industry) => (
+            <div
+              key={industry}
+              className="min-w-[180px] snap-start rounded-2xl bg-[#ECECEC] p-4 sm:min-w-[220px] sm:p-5"
+            >
+              <span className="text-sm font-medium text-[#1D1C1B]">
+                {industry}
+              </span>
             </div>
           ))}
+        </div>
+
+        <div className="relative mt-6 h-px w-full bg-[#D4D4D4]">
+          <span
+            className="absolute left-[15%] top-0 h-px w-20"
+            style={{ backgroundColor: 'var(--accent-blue)' }}
+          />
+          <span
+            className="absolute left-[24%] top-0 h-px w-10"
+            style={{ backgroundColor: 'var(--accent-warm)' }}
+          />
         </div>
       </Container>
     </section>

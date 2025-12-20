@@ -1,69 +1,117 @@
+import Link from 'next/link'
 import { Container } from '@/components/ui/container'
+
+const logos = ['Northwind', 'Mosaic', 'Fieldline', 'Citrine', 'Ironclad']
 
 const features = [
   {
-    title: 'Always On',
-    description: 'Your AI agent never sleeps. Every call answered, day or night.',
+    title: 'Secure by design',
+    description:
+      'Enterprise-grade controls, audit trails, and clear accountability from first call.',
+    link: 'Security overview',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-8 w-8 text-[#1D1C1B]" fill="none">
+        <path
+          d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M9.5 12.5l2 2 3.5-3.5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
   },
   {
-    title: 'Instant Pickup',
-    description: 'Calls answered in under 3 seconds. No hold music.',
+    title: 'Flexible deployment',
+    description:
+      'Launch quickly with guided setup or integrate deeply with your existing stack.',
+    link: 'Deployment options',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-8 w-8 text-[#1D1C1B]" fill="none">
+        <path
+          d="M4 7h16M4 12h16M4 17h10"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <circle cx="18" cy="17" r="2" stroke="currentColor" strokeWidth="1.5" />
+      </svg>
+    ),
   },
   {
-    title: 'Books Appointments',
-    description: 'Schedules directly into your calendar system.',
-  },
-  {
-    title: 'Learns Your Business',
-    description: 'Trained on your services, pricing, and FAQs.',
+    title: 'Calm for customers',
+    description:
+      'Natural voice experiences that feel reliable, friendly, and always available.',
+    link: 'Experience guide',
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-8 w-8 text-[#1D1C1B]" fill="none">
+        <path
+          d="M12 4c4.4 0 8 2.9 8 6.5S16.4 17 12 17s-8-2.9-8-6.5S7.6 4 12 4z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M8 20l4-3 4 3"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    ),
   },
 ]
 
 export function FeaturesGrid() {
   return (
-    <section id="features" className="py-24 bg-white">
+    <section id="solutions" className="bg-white py-24 scroll-mt-24">
       <Container>
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 max-w-5xl mx-auto">
-          {/* Card 1 - Large Left Card */}
-          <div className="lg:row-span-3 bg-[#1D1C1B] rounded-sm p-8 flex flex-col justify-end min-h-[400px]">
-            <h3 className="text-2xl font-semibold text-white mb-3">
-              {features[0].title}
-            </h3>
-            <p className="text-[#8A8A8A] leading-relaxed">
-              {features[0].description}
-            </p>
+        <div className="text-center">
+          <p className="text-xs uppercase tracking-[0.4em] text-[#6B6B6B]">
+            Trusted by modern teams
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-8 text-sm font-medium text-[#1D1C1B]/70">
+            {logos.map((logo) => (
+              <span key={logo}>{logo}</span>
+            ))}
           </div>
+        </div>
 
-          {/* Card 2 - Top Right */}
-          <div className="bg-[#ECECEC] rounded-sm p-6">
-            <h3 className="text-xl font-semibold text-[#1D1C1B] mb-2">
-              {features[1].title}
-            </h3>
-            <p className="text-[#4A4A4A] text-sm leading-relaxed">
-              {features[1].description}
-            </p>
-          </div>
+        <div className="mt-16 text-center">
+          <h2 className="text-3xl md:text-4xl font-display tracking-tight text-[#1D1C1B]">
+            Safe. Flexible. Built for business.
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base text-[#4A4A4A]">
+            Keep the experience clean and predictable while giving your team the tools
+            to automate and scale.
+          </p>
+        </div>
 
-          {/* Card 3 - Middle Right */}
-          <div className="bg-white border border-[#ECECEC] rounded-sm p-6">
-            <h3 className="text-xl font-semibold text-[#1D1C1B] mb-2">
-              {features[2].title}
-            </h3>
-            <p className="text-[#4A4A4A] text-sm leading-relaxed">
-              {features[2].description}
-            </p>
-          </div>
-
-          {/* Card 4 - Bottom Right */}
-          <div className="bg-[#F4F3F3] rounded-sm p-6">
-            <h3 className="text-xl font-semibold text-[#1D1C1B] mb-2">
-              {features[3].title}
-            </h3>
-            <p className="text-[#4A4A4A] text-sm leading-relaxed">
-              {features[3].description}
-            </p>
-          </div>
+        <div className="mt-12 grid gap-10 md:grid-cols-3">
+          {features.map((feature) => (
+            <div key={feature.title} className="text-center md:text-left">
+              <div className="mb-4 inline-flex items-center justify-center rounded-2xl bg-[#F4F3F3] p-3">
+                {feature.icon}
+              </div>
+              <h3 className="text-lg font-semibold text-[#1D1C1B]">
+                {feature.title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-[#4A4A4A]">
+                {feature.description}
+              </p>
+              <Link
+                href="#"
+                className="mt-4 inline-flex text-sm font-medium text-[#1D1C1B] underline underline-offset-4"
+              >
+                {feature.link}
+              </Link>
+            </div>
+          ))}
         </div>
       </Container>
     </section>

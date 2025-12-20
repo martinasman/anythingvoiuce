@@ -7,6 +7,7 @@ import {
   DemoCTA,
   PricingSection,
   FAQAccordion,
+  NewsSection,
   BottomCTA,
   Footer,
 } from '@/components/landing'
@@ -22,6 +23,7 @@ export default function Home() {
       <DemoCTA />
       <PricingSection />
       <FAQAccordion />
+      <NewsSection />
       <BottomCTA />
       <Footer />
     </main>
