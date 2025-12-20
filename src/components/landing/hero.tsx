@@ -16,7 +16,7 @@ export function Hero() {
           <div className="flex items-baseline gap-4 mb-8">
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight text-[#1D1C1B]">
               Anything
-              <span className="text-[#5A9BC7]">Voice</span>
+              <span className="text-[#4A4A4A]">Voice</span>
             </h1>
             <span className="text-lg md:text-xl font-medium text-[#1D1C1B] border border-[#1D1C1B] rounded px-2 py-0.5">
               1.0
@@ -70,12 +70,12 @@ export function Hero() {
             </svg>
 
             {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#F4F3F3]/80 via-transparent to-[#E1EFF9]/40" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#F4F3F3]/80 via-transparent to-[#ECECEC]/40" />
 
             {/* 3D Shape Placeholder */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px]">
               {/* Placeholder for future 3D illustration */}
-              <div className="w-full h-full bg-gradient-to-br from-[#BFD7EA]/30 via-[#5A9BC7]/20 to-[#E1EFF9]/40 rounded-3xl transform rotate-12 blur-sm" />
+              <div className="w-full h-full bg-gradient-to-br from-[#ECECEC]/30 via-[#D4D4D4]/20 to-[#F4F3F3]/40 rounded-3xl transform rotate-12 blur-sm" />
             </div>
           </div>
         </div>

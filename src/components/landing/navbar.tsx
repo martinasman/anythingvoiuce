@@ -37,7 +37,7 @@ export function Navbar() {
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-1">
-            <span className="font-display text-2xl text-[#275379]">Anything</span>
+            <span className="font-display text-2xl text-[#1D1C1B]">Anything</span>
             <span className="text-2xl font-semibold text-[#1D1C1B]">Voice</span>
           </Link>
 

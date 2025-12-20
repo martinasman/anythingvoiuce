@@ -25,7 +25,7 @@ const stats = [
 
 export function StatsSection() {
   return (
-    <section className="py-24 bg-gradient-to-b from-[#BFD7EA]/30 to-white">
+    <section className="py-24 bg-gradient-to-b from-[#ECECEC]/30 to-white">
       <Container>
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
@@ -48,7 +48,7 @@ export function StatsSection() {
                 )}
 
                 {/* Value */}
-                <div className="text-4xl md:text-5xl font-bold text-[#275379] mb-2">
+                <div className="text-4xl md:text-5xl font-bold text-[#1D1C1B] mb-2">
                   {stat.value}
                 </div>
 

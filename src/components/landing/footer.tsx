@@ -29,7 +29,7 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-1 mb-4">
-              <span className="font-display text-2xl text-[#BFD7EA]">Anything</span>
+              <span className="font-display text-2xl text-[#ECECEC]">Anything</span>
               <span className="text-2xl font-semibold text-white">Voice</span>
             </Link>
             <p className="text-[#8A8A8A] text-sm leading-relaxed">

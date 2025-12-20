@@ -79,13 +79,13 @@ export function PricingSection() {
               className={cn(
                 'relative rounded-sm p-8 transition-all',
                 plan.highlighted
-                  ? 'bg-[#275379] text-white ring-2 ring-[#5A9BC7] scale-105'
-                  : 'bg-white border border-[#ECECEC] hover:border-[#BFD7EA] hover:shadow-lg'
+                  ? 'bg-[#1D1C1B] text-white ring-2 ring-[#4A4A4A] scale-105'
+                  : 'bg-white border border-[#ECECEC] hover:border-[#4A4A4A] hover:shadow-lg'
               )}
             >
               {/* Badge */}
               {plan.badge && (
-                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#5A9BC7] text-white">
+                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4A4A4A] text-white">
                   {plan.badge}
                 </Badge>
               )}
@@ -137,7 +137,7 @@ export function PricingSection() {
                     <svg
                       className={cn(
                         'w-5 h-5 mt-0.5 flex-shrink-0',
-                        plan.highlighted ? 'text-[#BFD7EA]' : 'text-emerald-500'
+                        plan.highlighted ? 'text-[#ECECEC]' : 'text-[#4A4A4A]'
                       )}
                       fill="currentColor"
                       viewBox="0 0 20 20"
@@ -165,7 +165,7 @@ export function PricingSection() {
                 className={cn(
                   'w-full',
                   plan.highlighted
-                    ? 'bg-white text-[#275379] hover:bg-[#ECECEC]'
+                    ? 'bg-white text-[#1D1C1B] hover:bg-[#ECECEC]'
                     : ''
                 )}
                 variant={plan.highlighted ? 'secondary' : 'primary'}

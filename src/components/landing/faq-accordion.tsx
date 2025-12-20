@@ -87,7 +87,7 @@ export function FAQAccordion() {
         <div className="text-center mt-8">
           <p className="text-[#4A4A4A]">
             Still have questions?{' '}
-            <a href="/contact" className="text-[#5A9BC7] hover:text-[#4683AE] font-medium">
+            <a href="/contact" className="text-[#4A4A4A] hover:text-[#1D1C1B] font-medium underline">
               Get in touch
             </a>
           </p>

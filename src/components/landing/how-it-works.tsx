@@ -61,7 +61,7 @@ export function HowItWorks() {
         {/* Steps */}
         <div className="relative">
           {/* Connecting Line */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#BFD7EA] to-transparent transform -translate-y-1/2" />
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4D4D4] to-transparent transform -translate-y-1/2" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
@@ -69,12 +69,12 @@ export function HowItWorks() {
                 {/* Card */}
                 <div className="bg-white border border-[#ECECEC] rounded-sm p-8 text-center relative z-10 h-full">
                   {/* Number Badge */}
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#5A9BC7] text-white text-sm font-bold px-3 py-1 rounded-sm">
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#1D1C1B] text-white text-sm font-bold px-3 py-1 rounded-sm">
                     {step.number}
                   </div>
 
                   {/* Icon */}
-                  <div className="w-16 h-16 mx-auto mb-6 mt-4 bg-[#E1EFF9] text-[#5A9BC7] rounded-sm flex items-center justify-center">
+                  <div className="w-16 h-16 mx-auto mb-6 mt-4 bg-[#ECECEC] text-[#4A4A4A] rounded-sm flex items-center justify-center">
                     {step.icon}
                   </div>
 
@@ -90,7 +90,7 @@ export function HowItWorks() {
                 {/* Arrow (mobile) */}
                 {index < steps.length - 1 && (
                   <div className="lg:hidden flex justify-center my-4">
-                    <svg className="w-6 h-6 text-[#BFD7EA]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-[#D4D4D4]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                     </svg>
                   </div>

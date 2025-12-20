@@ -59,7 +59,7 @@ const industries = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
       </svg>
     ),
-    color: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+    color: 'bg-[#ECECEC] text-[#4A4A4A] border-[#D4D4D4]',
   },
 ]
 
@@ -82,7 +82,7 @@ export function Industries() {
           {industries.map((industry) => (
             <div
               key={industry.name}
-              className="group bg-white border border-[#ECECEC] rounded-sm p-6 transition-all hover:border-[#BFD7EA] hover:shadow-lg"
+              className="group bg-white border border-[#ECECEC] rounded-sm p-6 transition-all hover:border-[#4A4A4A] hover:shadow-lg"
             >
               {/* Icon */}
               <div className={`w-14 h-14 rounded-sm flex items-center justify-center mb-4 border ${industry.color}`}>
@@ -98,7 +98,7 @@ export function Industries() {
               </p>
 
               {/* Arrow */}
-              <div className="mt-4 flex items-center text-[#5A9BC7] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="mt-4 flex items-center text-[#1D1C1B] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                 <span>Learn more</span>
                 <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
