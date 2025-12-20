@@ -1,6 +1,5 @@
 import { Container } from '@/components/ui/container'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils/cn'
 
 const plans = [
@@ -8,13 +7,10 @@ const plans = [
     name: 'Starter',
     price: '$29',
     period: '/month',
-    description: 'Perfect for small businesses just getting started.',
     features: [
-      '100 minutes included',
-      'Basic call handling',
-      'Email support',
+      '100 minutes',
       '1 phone number',
-      'Business hours coverage',
+      'Email support',
     ],
     cta: 'Get Started',
     highlighted: false,
@@ -23,34 +19,24 @@ const plans = [
     name: 'Growth',
     price: '$79',
     period: '/month',
-    description: 'For growing businesses that need more power.',
     features: [
-      '500 minutes included',
-      'Advanced AI responses',
-      'Priority support',
+      '500 minutes',
       '3 phone numbers',
       '24/7 coverage',
-      'Calendar integrations',
-      'Custom voice options',
+      'Calendar sync',
     ],
     cta: 'Get Started',
     highlighted: true,
-    badge: 'Most Popular',
   },
   {
     name: 'Enterprise',
     price: 'Custom',
     period: '',
-    description: 'For large organizations with custom needs.',
     features: [
       'Unlimited minutes',
-      'Custom AI training',
-      'Dedicated support',
       'Unlimited numbers',
-      '24/7 coverage',
-      'All integrations',
+      'Custom training',
       'SLA guarantee',
-      'Custom analytics',
     ],
     cta: 'Contact Sales',
     highlighted: false,
@@ -62,38 +48,26 @@ export function PricingSection() {
     <section id="pricing" className="py-24 bg-white">
       <Container>
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-4">
-            Simple, transparent pricing
-          </h2>
-          <p className="text-lg text-[#4A4A4A]">
-            No hidden fees. No surprises. Just honest pricing that scales with your business.
-          </p>
-        </div>
+        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#1D1C1B] mb-16 text-center">
+          Pricing
+        </h2>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.name}
               className={cn(
-                'relative rounded-sm p-8 transition-all',
+                'rounded-sm p-8',
                 plan.highlighted
-                  ? 'bg-[#1D1C1B] text-white ring-2 ring-[#4A4A4A] scale-105'
-                  : 'bg-white border border-[#ECECEC] hover:border-[#4A4A4A] hover:shadow-lg'
+                  ? 'bg-[#1D1C1B] text-white'
+                  : 'bg-[#F4F3F3]'
               )}
             >
-              {/* Badge */}
-              {plan.badge && (
-                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#4A4A4A] text-white">
-                  {plan.badge}
-                </Badge>
-              )}
-
               {/* Plan Name */}
               <h3
                 className={cn(
-                  'text-xl font-semibold mb-2',
+                  'text-lg font-medium mb-4',
                   plan.highlighted ? 'text-white' : 'text-[#1D1C1B]'
                 )}
               >
@@ -101,10 +75,10 @@ export function PricingSection() {
               </h3>
 
               {/* Price */}
-              <div className="mb-4">
+              <div className="mb-6">
                 <span
                   className={cn(
-                    'text-4xl font-bold',
+                    'text-3xl font-semibold',
                     plan.highlighted ? 'text-white' : 'text-[#1D1C1B]'
                   )}
                 >
@@ -113,49 +87,24 @@ export function PricingSection() {
                 <span
                   className={cn(
                     'text-sm',
-                    plan.highlighted ? 'text-white/70' : 'text-[#6B6B6B]'
+                    plan.highlighted ? 'text-white/60' : 'text-[#6B6B6B]'
                   )}
                 >
                   {plan.period}
                 </span>
               </div>
 
-              {/* Description */}
-              <p
-                className={cn(
-                  'text-sm mb-6',
-                  plan.highlighted ? 'text-white/80' : 'text-[#4A4A4A]'
-                )}
-              >
-                {plan.description}
-              </p>
-
               {/* Features */}
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 mb-8">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
-                    <svg
-                      className={cn(
-                        'w-5 h-5 mt-0.5 flex-shrink-0',
-                        plan.highlighted ? 'text-[#ECECEC]' : 'text-[#4A4A4A]'
-                      )}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    <span
-                      className={cn(
-                        'text-sm',
-                        plan.highlighted ? 'text-white/90' : 'text-[#4A4A4A]'
-                      )}
-                    >
-                      {feature}
-                    </span>
+                  <li
+                    key={feature}
+                    className={cn(
+                      'text-sm',
+                      plan.highlighted ? 'text-white/80' : 'text-[#4A4A4A]'
+                    )}
+                  >
+                    {feature}
                   </li>
                 ))}
               </ul>
@@ -174,13 +123,6 @@ export function PricingSection() {
               </Button>
             </div>
           ))}
-        </div>
-
-        {/* Additional Info */}
-        <div className="text-center mt-12">
-          <p className="text-[#6B6B6B] text-sm">
-            All plans include a 14-day free trial. No credit card required.
-          </p>
         </div>
       </Container>
     </section>

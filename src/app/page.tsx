@@ -3,7 +3,6 @@ import {
   Hero,
   FeaturesGrid,
   HowItWorks,
-  Industries,
   StatsSection,
   DemoCTA,
   PricingSection,
@@ -19,7 +18,6 @@ export default function Home() {
       <Hero />
       <FeaturesGrid />
       <HowItWorks />
-      <Industries />
       <StatsSection />
       <DemoCTA />
       <PricingSection />
