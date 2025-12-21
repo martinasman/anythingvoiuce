@@ -3,7 +3,7 @@ import { Container } from '@/components/ui/container'
 
 export function PricingSection() {
   return (
-    <section id="developers" className="relative overflow-hidden py-20 text-white scroll-mt-24">
+    <section id="developers" className="relative overflow-hidden min-h-screen flex items-center py-20 text-white scroll-mt-24">
       <div className="absolute inset-0 bg-[linear-gradient(135deg,#1B2740,#2B4372_45%,#5A9BC7)]" />
       <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_70%_30%,#BFD7EA33,transparent_55%)]" />
       <Container>

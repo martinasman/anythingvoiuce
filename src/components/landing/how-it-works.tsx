@@ -3,7 +3,7 @@ import { Container } from '@/components/ui/container'
 
 export function HowItWorks() {
   return (
-    <section className="relative overflow-hidden py-20 text-white">
+    <section className="relative overflow-hidden min-h-screen flex items-center py-20 text-white">
       <div className="absolute inset-0 bg-[linear-gradient(135deg,#1F2C3A,#275379_45%,#5A9BC7)]" />
       <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_20%_20%,#BFD7EA33,transparent_50%)]" />
       <Container>

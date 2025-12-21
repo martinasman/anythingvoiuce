@@ -63,6 +63,17 @@ export function Navbar() {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-4">
             <Link
+              href="/admin/pipeline"
+              className={cn(
+                'text-sm font-medium transition-colors',
+                scrolled
+                  ? 'text-[#4A4A4A] hover:text-[#1D1C1B]'
+                  : 'text-[#3A3A3A] hover:text-[#1D1C1B]'
+              )}
+            >
+              Admin
+            </Link>
+            <Link
               href="/login"
               className={cn(
                 'text-sm font-medium transition-colors',
@@ -114,6 +125,13 @@ export function Navbar() {
                 </a>
               ))}
               <div className="h-px bg-[#ECECEC]" />
+              <Link
+                href="/admin/pipeline"
+                onClick={() => setMenuOpen(false)}
+                className="text-sm font-medium text-[#4A4A4A]"
+              >
+                Admin
+              </Link>
               <Link
                 href="/login"
                 onClick={() => setMenuOpen(false)}
