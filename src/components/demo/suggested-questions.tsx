@@ -12,7 +12,7 @@ export function SuggestedQuestions({ questions }: SuggestedQuestionsProps) {
         {questions.map((question, index) => (
           <span
             key={index}
-            className="group px-5 py-2.5 bg-white/5 backdrop-blur-sm text-white/70 text-sm rounded-full border border-white/10 hover:border-violet-500/50 hover:bg-violet-500/10 hover:text-white transition-all duration-200 cursor-default"
+            className="group px-5 py-2.5 bg-white/5 backdrop-blur-sm text-white/70 text-sm rounded-full border border-white/10 hover:border-sky-500/50 hover:bg-sky-500/10 hover:text-white transition-all duration-200 cursor-default"
           >
             <span className="opacity-50 mr-1">&ldquo;</span>
             {question}

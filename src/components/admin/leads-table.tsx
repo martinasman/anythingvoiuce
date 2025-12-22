@@ -42,7 +42,7 @@ const STATUS_STYLES: Record<string, { bg: string; text: string }> = {
   pending: { bg: 'bg-zinc-700', text: 'text-zinc-300' },
   scraped: { bg: 'bg-yellow-900/50', text: 'text-yellow-300' },
   agent_created: { bg: 'bg-blue-900/50', text: 'text-blue-300' },
-  email_sent: { bg: 'bg-purple-900/50', text: 'text-purple-300' },
+  email_sent: { bg: 'bg-blue-900/50', text: 'text-sky-300' },
   interested: { bg: 'bg-green-900/50', text: 'text-green-300' },
   contacted: { bg: 'bg-cyan-900/50', text: 'text-cyan-300' },
   customer: { bg: 'bg-emerald-900/50', text: 'text-emerald-300' },
@@ -371,7 +371,7 @@ export function LeadsTable({ leads, onRefresh, onSendEmail, onDelete }: LeadsTab
                               e.stopPropagation()
                               openEmailModal(lead)
                             }}
-                            className="px-2.5 py-1 text-xs font-medium bg-purple-600 hover:bg-purple-700 text-white rounded transition-colors"
+                            className="px-2.5 py-1 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
                           >
                             Skicka demo
                           </button>
@@ -584,7 +584,7 @@ export function LeadsTable({ leads, onRefresh, onSendEmail, onDelete }: LeadsTab
                   <button
                     onClick={handleSendEmail}
                     disabled={emailModal.isLoading || !emailTo}
-                    className="flex-1 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+                    className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
                   >
                     {emailModal.isLoading ? (
                       <>

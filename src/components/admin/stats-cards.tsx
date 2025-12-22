@@ -51,7 +51,7 @@ export function StatsCards({ total, interested, agentCreated, contacted = 0 }: S
       <StatCard
         label="Agents Created"
         value={agentCreated}
-        color="text-violet-500"
+        color="text-sky-500"
         icon={
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path

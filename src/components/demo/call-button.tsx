@@ -61,14 +61,14 @@ export function CallButton({ status, volumeLevel, onStart, onEnd }: CallButtonPr
         {isActive && (
           <>
             <span
-              className="absolute inset-[-24px] rounded-full bg-gradient-to-r from-violet-500/30 via-fuchsia-500/30 to-violet-500/30 blur-2xl transition-all duration-150"
+              className="absolute inset-[-24px] rounded-full bg-gradient-to-r from-cyan-500/30 via-sky-500/30 to-blue-500/30 blur-2xl transition-all duration-150"
               style={{
                 transform: `scale(${1 + volumeLevel * 0.3})`,
                 opacity: 0.4 + volumeLevel * 0.6,
               }}
             />
             <span
-              className="absolute inset-[-12px] rounded-full bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 blur-xl"
+              className="absolute inset-[-12px] rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 blur-xl"
               style={{
                 opacity: 0.6 + volumeLevel * 0.4,
               }}
@@ -86,8 +86,8 @@ export function CallButton({ status, volumeLevel, onStart, onEnd }: CallButtonPr
             'focus:outline-none focus:ring-4 focus:ring-offset-4 focus:ring-offset-[#0A0A0A]',
             'shadow-2xl',
             isActive
-              ? 'bg-gradient-to-br from-violet-500 via-fuchsia-500 to-violet-600 hover:from-violet-600 hover:via-fuchsia-600 hover:to-violet-700 focus:ring-violet-500/50'
-              : 'bg-gradient-to-br from-violet-600 via-fuchsia-600 to-violet-700 hover:from-violet-500 hover:via-fuchsia-500 hover:to-violet-600 focus:ring-violet-500/50',
+              ? 'bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-600 hover:from-cyan-400 hover:via-sky-400 hover:to-blue-500 focus:ring-sky-500/50'
+              : 'bg-gradient-to-br from-cyan-500 via-sky-500 to-blue-600 hover:from-cyan-400 hover:via-sky-400 hover:to-blue-500 focus:ring-sky-500/50',
             (isConnecting || isEnded) && 'opacity-70 cursor-not-allowed'
           )}
         >
