@@ -62,103 +62,127 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
   })
 
   return (
-    <div className="min-h-screen bg-[#F4F3F3] text-slate-900">
-      {/* Header */}
-      <header className="border-b border-slate-200 px-6 py-4 bg-white">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          {/* Logo */}
+    <div className="min-h-screen bg-[#0A0A0A]">
+      {/* Hero Section - Dark with gradient */}
+      <div className="relative overflow-hidden">
+        {/* Background gradient effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-violet-950/20 via-transparent to-transparent" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-radial from-violet-500/10 via-transparent to-transparent blur-3xl" />
+
+        {/* Header */}
+        <header className="relative z-10 px-6 py-5">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
+            <Link href="/" className="hover:opacity-80 transition-opacity">
+              <Image
+                src="/anythingVoiceLogo.png"
+                alt="AnythingVoice"
+                width={120}
+                height={40}
+                priority
+                className="brightness-0 invert"
+              />
+            </Link>
+            <div className="flex items-center gap-3">
+              <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-violet-400 bg-violet-500/10 rounded-full border border-violet-500/20">
+                Demo
+              </span>
+            </div>
+          </div>
+        </header>
+
+        {/* Main Hero Content */}
+        <main className="relative z-10 px-6 pt-8 pb-20">
+          <div className="max-w-4xl mx-auto">
+            {/* Business Name Badge */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm rounded-full border border-white/10">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-sm text-white/80 font-medium">{business.name}</span>
+              </div>
+            </div>
+
+            {/* Hero Text */}
+            <div className="text-center mb-12">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                Lyssna på din
+                <span className="block bg-gradient-to-r from-violet-400 via-fuchsia-400 to-violet-400 bg-clip-text text-transparent">
+                  AI-receptionist
+                </span>
+              </h1>
+              <p className="text-lg text-white/50 max-w-md mx-auto">
+                Tryck på knappen och ställ en fråga
+              </p>
+            </div>
+
+            {/* Call Interface - Centered with glow */}
+            <div className="flex flex-col items-center">
+              {/* Glow behind button */}
+              <div className="relative">
+                <div className="absolute inset-0 scale-150 bg-gradient-radial from-violet-500/20 via-transparent to-transparent blur-2xl" />
+                <CallButton
+                  status={status}
+                  volumeLevel={volumeLevel}
+                  onStart={startCall}
+                  onEnd={endCall}
+                />
+              </div>
+              <p className="mt-6 text-sm font-medium text-white/40">
+                {status === 'idle' && 'Tryck för att starta'}
+                {status === 'connecting' && 'Ansluter...'}
+                {status === 'active' && 'Prata nu'}
+              </p>
+            </div>
+
+            {/* Live Transcript */}
+            {transcript && (
+              <div className="mt-12 max-w-2xl mx-auto">
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">
+                      Live transkript
+                    </span>
+                  </div>
+                  <div className="text-sm text-white/70 whitespace-pre-wrap leading-relaxed">
+                    {transcript}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Suggested Questions */}
+            <div className="mt-16">
+              <SuggestedQuestions questions={suggestedQuestions} />
+            </div>
+          </div>
+        </main>
+      </div>
+
+      {/* CTA Section - Light contrast */}
+      <div className="bg-[#FAFAFA] py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <CTASection
+            businessId={business.id}
+            businessName={business.name}
+          />
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-[#0A0A0A] border-t border-white/5 px-6 py-8">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/" className="hover:opacity-80 transition-opacity">
             <Image
               src="/anythingVoiceLogo.png"
               alt="AnythingVoice"
               width={100}
               height={33}
-              priority
+              className="brightness-0 invert opacity-50"
             />
           </Link>
-
-          {/* Business info */}
-          <div className="text-right">
-            <span className="text-xs font-semibold text-[#5A9BC7] uppercase tracking-wider">
-              Demo
-            </span>
-            <h1 className="text-lg font-bold text-slate-900">{business.name}</h1>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-3xl mx-auto px-6 py-12">
-        <div className="space-y-10">
-          {/* Intro text */}
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-slate-900 mb-3">
-              Lyssna på din AI-receptionist
-            </h2>
-            <p className="text-slate-600 max-w-lg mx-auto">
-              Tryck på knappen och ställ en fråga. Testa hur jag skulle svara som receptionist för {business.name}.
-            </p>
-          </div>
-
-          {/* Call Interface */}
-          <div className="flex flex-col items-center py-6">
-            <CallButton
-              status={status}
-              volumeLevel={volumeLevel}
-              onStart={startCall}
-              onEnd={endCall}
-            />
-            <p className="mt-4 text-sm text-slate-500">
-              {status === 'idle' && 'Tryck för att starta'}
-              {status === 'connecting' && 'Ansluter...'}
-              {status === 'connected' && 'Prata nu'}
-            </p>
-          </div>
-
-          {/* Live Transcript */}
-          {transcript && (
-            <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
-              <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                Transkript
-              </h3>
-              <div className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
-                {transcript}
-              </div>
-            </div>
-          )}
-
-          {/* Suggested Questions */}
-          <div>
-            <p className="text-center text-sm text-slate-500 mb-4">
-              Testa att fråga:
-            </p>
-            <div className="flex justify-center">
-              <SuggestedQuestions questions={suggestedQuestions} />
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="border-t border-slate-200" />
-
-          {/* CTA Section */}
-          <CTASection
-            businessId={business.id}
-            businessName={business.name}
-          />
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-slate-200 px-6 py-6 bg-white">
-        <div className="max-w-3xl mx-auto">
-          <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
-            <Image
-              src="/anythingVoiceLogo.png"
-              alt="AnythingVoice"
-              width={80}
-              height={27}
-            />
-          </Link>
+          <p className="text-xs text-white/30">
+            Powered by AI
+          </p>
         </div>
       </footer>
     </div>

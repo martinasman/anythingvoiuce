@@ -35,7 +35,10 @@ export default async function DemoPage({ params }: PageProps) {
     metadata: { timestamp: new Date().toISOString() },
   })
 
-  const suggestedQuestions = getSuggestedQuestions(business.industry as Industry)
+  const suggestedQuestions = getSuggestedQuestions(
+    business.industry as Industry,
+    business.common_call_scenarios
+  )
 
   return (
     <DemoContent

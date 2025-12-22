@@ -7,6 +7,7 @@ export const IndustrySchema = z.enum([
   'contractor',
   'auto',
   'realestate',
+  'moving',
   'other',
 ])
 

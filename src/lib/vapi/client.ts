@@ -164,7 +164,8 @@ export async function createVapiAssistant(
         optimizeStreamingLatency: 3,
       },
       server: {
-        url: `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/vapi`,
+        // Vapi requires https:// for webhook URLs
+        url: `${(process.env.NEXT_PUBLIC_APP_URL || '').replace('http://', 'https://')}/api/webhook/vapi`,
       },
       metadata: {
         slug,

@@ -26,6 +26,10 @@ const DEMO_SCENARIOS: Record<Industry, { scenario: string; example: string }> = 
     scenario: 'boka en visning',
     example: 'Självklart! Vilket objekt är du intresserad av, så kollar jag tillgängliga tider.',
   },
+  moving: {
+    scenario: 'boka en flytt',
+    example: 'Självklart! Varifrån och vart ska du flytta, och vilket datum passar dig?',
+  },
   other: {
     scenario: 'få hjälp',
     example: 'Självklart! Berätta vad du behöver hjälp med så ser jag vad jag kan göra.',
@@ -62,6 +66,11 @@ const INDUSTRY_SUGGESTED_QUESTIONS: Record<Industry, string[]> = {
     'Jag vill boka en visning',
     'Vilka objekt har ni i mitt område?',
     'Jag funderar på att sälja min bostad',
+  ],
+  moving: [
+    'Jag vill ha en offert på flytt',
+    'Hur snabbt kan ni hjälpa mig flytta?',
+    'Vad kostar det att flytta en tvåa?',
   ],
   other: [
     'Berätta om era tjänster',
@@ -162,6 +171,14 @@ export function getFirstMessage(business: ExtractedBusinessData): string {
   return `Hej! Det här är en demo av hur jag skulle låta som receptionist för ${business.name}. Om en kund ringer och vill ${scenario.scenario}, svarar jag såhär: "${scenario.example}" - Testa gärna att ställa en fråga!`
 }
 
-export function getSuggestedQuestions(industry: Industry): string[] {
+export function getSuggestedQuestions(
+  industry: Industry,
+  commonCallScenarios?: string[] | null
+): string[] {
+  // Use scraped scenarios if available (first 3)
+  if (commonCallScenarios && commonCallScenarios.length > 0) {
+    return commonCallScenarios.slice(0, 3)
+  }
+  // Fall back to industry-based questions
   return INDUSTRY_SUGGESTED_QUESTIONS[industry] || INDUSTRY_SUGGESTED_QUESTIONS.other
 }

@@ -103,6 +103,9 @@ export async function POST(request: NextRequest) {
           contact_name: businessData.contact_name,
           contact_email: businessData.contact_email,
           contact_phone: businessData.contact_phone,
+          common_call_scenarios: businessData.common_call_scenarios || null,
+          scrape_confidence: businessData.scrape_confidence || null,
+          unique_selling_point: businessData.unique_selling_point || null,
           status: 'scraped',
         })
         .eq('id', businessId)

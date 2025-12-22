@@ -4,17 +4,19 @@ interface SuggestedQuestionsProps {
 
 export function SuggestedQuestions({ questions }: SuggestedQuestionsProps) {
   return (
-    <div className="space-y-3 max-w-md">
-      <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-center">
-        Try asking about
-      </h3>
-      <div className="flex flex-wrap justify-center gap-2">
+    <div className="w-full max-w-2xl mx-auto">
+      <p className="text-center text-xs font-medium text-white/30 uppercase tracking-widest mb-6">
+        Testa att fråga
+      </p>
+      <div className="flex flex-wrap justify-center gap-3">
         {questions.map((question, index) => (
           <span
             key={index}
-            className="px-4 py-2 bg-slate-100 text-slate-600 text-sm rounded-sm border border-slate-200 hover:border-[#BFD7EA] hover:bg-[#E1EFF9] transition-colors"
+            className="group px-5 py-2.5 bg-white/5 backdrop-blur-sm text-white/70 text-sm rounded-full border border-white/10 hover:border-violet-500/50 hover:bg-violet-500/10 hover:text-white transition-all duration-200 cursor-default"
           >
-            &ldquo;{question}&rdquo;
+            <span className="opacity-50 mr-1">&ldquo;</span>
+            {question}
+            <span className="opacity-50 ml-1">&rdquo;</span>
           </span>
         ))}
       </div>

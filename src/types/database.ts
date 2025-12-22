@@ -9,6 +9,7 @@ export type IndustryType =
   | 'contractor'
   | 'auto'
   | 'realestate'
+  | 'moving'
   | 'other'
 
 export type BusinessStatus =
@@ -81,6 +82,10 @@ export interface Business {
   contact_name: string | null
   contact_email: string | null
   contact_phone: string | null
+  // Scraped data for better demos
+  common_call_scenarios: string[] | null
+  scrape_confidence: 'high' | 'medium' | 'low' | null
+  unique_selling_point: string | null
   // New production fields
   customer_id: string | null
   is_production: boolean

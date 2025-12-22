@@ -37,7 +37,7 @@ const EXTRACTION_PROMPT = `Du analyserar en svensk företagswebbplats för att b
 
 {
   "name": "Företagsnamnet",
-  "industry": "En av: restaurant, salon, clinic, contractor, auto, realestate, other",
+  "industry": "En av: restaurant, salon, clinic, contractor, auto, realestate, moving, other",
   "description": "En kort beskrivning av vad företaget gör (2-3 meningar på svenska)",
   "services": [
     { "name": "Tjänstnamn", "description": "Kort beskrivning", "price": "Pris om tillgängligt" }
@@ -82,6 +82,7 @@ VIKTIGA INSTRUKTIONER:
    - Contractor: "Begära offert", "Akut läcka", "Fråga om tillgänglighet"
    - Auto: "Boka service", "Däckbyte", "Besiktning"
    - Realestate: "Boka visning", "Fråga om objekt", "Sälja bostad"
+   - Moving: "Begära offert", "Boka flytt", "Fråga om pris"
 
 3. team_size - Gör en kvalificerad gissning:
    - Enmansföretag utan personal = "solo"
