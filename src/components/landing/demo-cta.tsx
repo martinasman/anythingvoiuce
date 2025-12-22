@@ -46,7 +46,7 @@ export function DemoCTA() {
               <h3 className="text-4xl md:text-5xl font-bold text-white">
                 Transform Your Calls
               </h3>
-              <button className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-lg font-semibold text-[#1D1C1B] transition-colors hover:bg-gray-100">
+              <button className="mt-8 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-8 py-4 text-lg font-semibold text-white transition-all hover:from-cyan-400 hover:to-blue-500 shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30">
                 Book a Demo
               </button>
             </div>

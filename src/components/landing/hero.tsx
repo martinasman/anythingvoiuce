@@ -22,7 +22,7 @@ export function Hero() {
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="#cta"
-              className="inline-flex items-center justify-center rounded-full bg-[#1D1C1B] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#3A3A3A]"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 text-sm font-medium text-white transition-all hover:from-cyan-400 hover:to-blue-500 shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:shadow-cyan-500/30"
             >
               Book a demo
             </Link>

@@ -4,7 +4,7 @@ import { Container } from '@/components/ui/container'
 export function PricingSection() {
   return (
     <section id="developers" className="relative overflow-hidden min-h-screen flex items-center py-20 text-white scroll-mt-24">
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,#1B2740,#2B4372_45%,#5A9BC7)]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-cyan-900 to-blue-800" />
       <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_70%_30%,#BFD7EA33,transparent_55%)]" />
       <Container>
         <div className="relative grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
