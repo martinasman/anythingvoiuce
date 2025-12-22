@@ -49,6 +49,14 @@ export const ExtractedBusinessDataSchema = z.object({
   contact_name: z.string().optional().nullable(),
   contact_email: z.string().optional().nullable(),
   contact_phone: z.string().optional().nullable(),
+  // Enhanced fields for better demo personalization
+  team_size: z.enum(['solo', 'small', 'medium', 'large']).optional(),
+  staff_names: z.array(z.string()).optional(),
+  common_call_scenarios: z.array(z.string()).optional(),
+  booking_method: z.enum(['phone', 'online', 'both', 'unknown']).optional(),
+  urgency_handling: z.boolean().optional(),
+  unique_selling_point: z.string().optional().nullable(),
+  scrape_confidence: z.enum(['high', 'medium', 'low']).optional(),
 })
 
 export type ExtractedBusinessData = z.infer<typeof ExtractedBusinessDataSchema>

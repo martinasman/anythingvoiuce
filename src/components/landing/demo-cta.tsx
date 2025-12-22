@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Container } from '@/components/ui/container'
 
 const tabs = [
@@ -33,26 +34,21 @@ export function DemoCTA() {
         </div>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-start">
-          <div className="rounded-2xl bg-[#F2F2F2] p-6">
-            <div className="rounded-xl border border-[#E0E0E0] bg-white p-4">
-              <div className="mb-4 flex items-center gap-3 text-xs text-[#6B6B6B]">
-                <span className="rounded-full bg-[#ECECEC] px-3 py-1">AI Brief</span>
-                <span>Updated 4 min ago</span>
-              </div>
-              <div className="space-y-3">
-                <div className="h-3 w-3/4 rounded-full bg-[#ECECEC]" />
-                <div className="h-3 w-2/3 rounded-full bg-[#ECECEC]" />
-                <div className="h-3 w-1/2 rounded-full bg-[#ECECEC]" />
-                <div className="h-3 w-4/5 rounded-full bg-[#ECECEC]" />
-              </div>
-              <div className="mt-6 flex items-center gap-3">
-                <button className="rounded-full bg-[#1D1C1B] px-4 py-2 text-xs font-medium text-white">
-                  Approve
-                </button>
-                <button className="rounded-full border border-[#D4D4D4] px-4 py-2 text-xs font-medium text-[#1D1C1B]">
-                  Edit
-                </button>
-              </div>
+          <div className="relative min-h-[400px] rounded-2xl overflow-hidden flex items-center justify-center">
+            <Image
+              src="/anythingBackground2.jpeg"
+              alt="Transform Your Calls"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-black/30" />
+            <div className="relative z-10 text-center px-8">
+              <h3 className="text-4xl md:text-5xl font-bold text-white">
+                Transform Your Calls
+              </h3>
+              <button className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-lg font-semibold text-[#1D1C1B] transition-colors hover:bg-gray-100">
+                Book a Demo
+              </button>
             </div>
           </div>
 

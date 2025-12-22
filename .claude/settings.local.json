@@ -38,7 +38,8 @@
       "Bash(node update-46elks-webhook.js:*)",
       "Bash(node:*)",
       "Bash(git merge:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls:*)"
     ]
   }
 }

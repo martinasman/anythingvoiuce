@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function AdminLayout({
   children,
@@ -10,11 +11,15 @@ export default function AdminLayout({
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col">
         <div className="p-6 border-b border-slate-200">
-          <Link href="/" className="flex items-center gap-1">
-            <span className="font-display text-xl text-[#275379]">Anything</span>
-            <span className="text-xl font-semibold text-slate-900">Voice</span>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/anythingVoiceLogo.png"
+              alt="AnythingVoice Logo"
+              width={90}
+              height={30}
+            />
           </Link>
-          <p className="text-sm text-slate-500 mt-1">Admin Dashboard</p>
+          <p className="text-sm text-slate-500 mt-3">Admin Dashboard</p>
         </div>
         <nav className="flex-1 p-4">
           <ul className="space-y-1">

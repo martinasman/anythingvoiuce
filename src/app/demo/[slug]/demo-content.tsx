@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback } from 'react'
 import { useVapi } from '@/hooks/use-vapi'
@@ -61,14 +62,19 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
   })
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-[#F4F3F3] text-slate-900">
       {/* Header */}
       <header className="border-b border-slate-200 px-6 py-4 bg-white">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          {/* Logo - links to landing page */}
-          <Link href="/" className="flex items-center gap-1 hover:opacity-80 transition-opacity">
-            <span className="font-display text-xl text-[#275379]">Anything</span>
-            <span className="text-xl font-semibold text-slate-900">Voice</span>
+          {/* Logo */}
+          <Link href="/" className="hover:opacity-80 transition-opacity">
+            <Image
+              src="/anythingVoiceLogo.png"
+              alt="AnythingVoice"
+              width={100}
+              height={33}
+              priority
+            />
           </Link>
 
           {/* Business info */}
@@ -83,41 +89,52 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
 
       {/* Main Content */}
       <main className="max-w-3xl mx-auto px-6 py-12">
-        <div className="space-y-12">
-          {/* Description */}
-          {business.description && (
-            <div className="text-center">
-              <p className="text-lg text-slate-600 max-w-xl mx-auto leading-relaxed">
-                {business.description}
-              </p>
-            </div>
-          )}
+        <div className="space-y-10">
+          {/* Intro text */}
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">
+              Lyssna på din AI-receptionist
+            </h2>
+            <p className="text-slate-600 max-w-lg mx-auto">
+              Tryck på knappen och ställ en fråga. Testa hur jag skulle svara som receptionist för {business.name}.
+            </p>
+          </div>
 
           {/* Call Interface */}
-          <div className="flex justify-center py-8">
+          <div className="flex flex-col items-center py-6">
             <CallButton
               status={status}
               volumeLevel={volumeLevel}
               onStart={startCall}
               onEnd={endCall}
             />
+            <p className="mt-4 text-sm text-slate-500">
+              {status === 'idle' && 'Tryck för att starta'}
+              {status === 'connecting' && 'Ansluter...'}
+              {status === 'connected' && 'Prata nu'}
+            </p>
           </div>
 
           {/* Live Transcript */}
           {transcript && (
-            <div className="bg-white rounded-sm p-6 border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
               <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
-                Transcript
+                Transkript
               </h3>
-              <div className="space-y-2 text-sm text-slate-600 font-mono whitespace-pre-wrap">
+              <div className="text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">
                 {transcript}
               </div>
             </div>
           )}
 
           {/* Suggested Questions */}
-          <div className="flex justify-center">
-            <SuggestedQuestions questions={suggestedQuestions} />
+          <div>
+            <p className="text-center text-sm text-slate-500 mb-4">
+              Testa att fråga:
+            </p>
+            <div className="flex justify-center">
+              <SuggestedQuestions questions={suggestedQuestions} />
+            </div>
           </div>
 
           {/* Divider */}
@@ -132,19 +149,16 @@ export function DemoContent({ business, suggestedQuestions }: DemoContentProps) 
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 px-6 py-8 mt-12 bg-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <p className="text-slate-500 text-sm">
-            Powered by{' '}
-            <a
-              href="https://anythinglabs.se"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#5A9BC7] hover:text-[#4683AE] transition-colors"
-            >
-              Anything Labs
-            </a>
-          </p>
+      <footer className="border-t border-slate-200 px-6 py-6 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
+            <Image
+              src="/anythingVoiceLogo.png"
+              alt="AnythingVoice"
+              width={80}
+              height={27}
+            />
+          </Link>
         </div>
       </footer>
     </div>

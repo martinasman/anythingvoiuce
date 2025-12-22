@@ -1,12 +1,12 @@
+import Image from 'next/image'
 import { Container } from '@/components/ui/container'
 
 const industries = [
-  'Financial services',
-  'Public sector',
-  'Energy',
-  'Healthcare',
-  'Consumer',
-  'Manufacturing',
+  { name: 'Financial services', image: '/financial.jpeg' },
+  { name: 'Public sector', image: '/public.jpeg' },
+  { name: 'Energy', image: '/solar.jpeg' },
+  { name: 'Healthcare', image: '/healthcare.jpeg' },
+  { name: 'Manufacturing', image: '/manufacturing.jpeg' },
 ]
 
 export function StatsSection() {
@@ -56,15 +56,24 @@ export function StatsSection() {
           </div>
         </div>
 
-        <div className="mt-10 -mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 no-scrollbar">
+        <div className="mt-10 -mx-4 flex snap-x gap-5 overflow-x-auto px-4 pb-4 no-scrollbar">
           {industries.map((industry) => (
             <div
-              key={industry}
-              className="min-w-[180px] snap-start rounded-2xl bg-[#ECECEC] p-4 sm:min-w-[220px] sm:p-5"
+              key={industry.name}
+              className="relative min-w-[300px] min-h-[280px] snap-start rounded-2xl overflow-hidden sm:min-w-[360px] sm:min-h-[320px]"
             >
-              <span className="text-sm font-medium text-[#1D1C1B]">
-                {industry}
-              </span>
+              <Image
+                src={industry.image}
+                alt={industry.name}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/30" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <span className="text-2xl sm:text-3xl font-light text-white">
+                  {industry.name}
+                </span>
+              </div>
             </div>
           ))}
         </div>

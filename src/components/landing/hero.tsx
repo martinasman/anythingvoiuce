@@ -1,9 +1,10 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Container } from '@/components/ui/container'
 
 export function Hero() {
   return (
-    <section id="platform" className="bg-[#F4F3F3] pt-32 pb-20 scroll-mt-24">
+    <section id="platform" className="bg-[#F4F3F3] pt-32 scroll-mt-24">
       <Container>
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs uppercase tracking-[0.35em] text-[#6B6B6B]">
@@ -23,13 +24,7 @@ export function Hero() {
               href="#cta"
               className="inline-flex items-center justify-center rounded-full bg-[#1D1C1B] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#3A3A3A]"
             >
-              Start a pilot
-            </Link>
-            <Link
-              href="#solutions"
-              className="text-sm font-medium text-[#1D1C1B] underline underline-offset-4"
-            >
-              Explore the platform
+              Book a demo
             </Link>
           </div>
           <div className="mt-10 flex items-center justify-center gap-3">
@@ -43,31 +38,26 @@ export function Hero() {
             />
           </div>
         </div>
-
-        <div className="mt-16 grid gap-6 md:grid-cols-[1.4fr_1fr]">
-          <div className="relative min-h-[260px] rounded-2xl bg-[linear-gradient(135deg,#E1EFF9,#BFD7EA)] p-6 md:min-h-[320px]">
-            <div className="absolute left-6 top-6 inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#1D1C1B]">
-              Real-time intake
-            </div>
-            <div className="absolute right-6 top-16 inline-flex items-center rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#1D1C1B]">
-              Smart routing
-            </div>
-            <div className="absolute bottom-6 left-6 right-6 rounded-xl bg-[#1D1C1B]/85 p-4 text-white">
-              <div className="mb-3 text-xs uppercase tracking-[0.3em] text-white/60">
-                Live transcript
-              </div>
-              <div className="space-y-2">
-                <div className="h-2 w-3/4 rounded-full bg-white/40" />
-                <div className="h-2 w-2/3 rounded-full bg-white/30" />
-                <div className="h-2 w-1/2 rounded-full bg-white/20" />
-              </div>
-            </div>
-          </div>
-          <div className="min-h-[260px] rounded-2xl bg-[#ECECEC] md:min-h-[320px]">
-            <div className="h-full w-full rounded-2xl border border-white/60" />
-          </div>
-        </div>
       </Container>
+
+      <div className="mt-16 grid gap-4 md:grid-cols-[1.8fr_1fr]">
+        <div className="relative min-h-[600px] overflow-hidden md:min-h-[800px]">
+          <Image
+            src="/anythingvoiceHeroImge1.png"
+            alt="AnythingVoice Hero"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div className="relative min-h-[600px] overflow-hidden md:min-h-[800px]">
+          <Image
+            src="/anythingbackground.jpg"
+            alt="AnythingVoice Background"
+            fill
+            className="object-cover"
+          />
+        </div>
+      </div>
     </section>
   )
 }
